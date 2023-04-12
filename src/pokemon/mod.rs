@@ -4,12 +4,17 @@ use typing::Types;
 pub struct Pokemon {
     name: String,
     type_1: Types,
-    type_2: Types,
-    hp: f64,
-    attack: f64,
-    defense: f64,
-    special_attack: f64,
-    special_defense: f64,
-    speed: f64,
-    // status: StatusType, // TODO: Implement status types
+    type_2: Option<Types>,
+    hp: u16,
+    attack: u16,
+    defense: u16,
+    special_attack: u16,
+    special_defense: u16,
+    speed: u16,
+    // status_condition: StatusType, // TODO: Implement status types
+    attack_modifier: u8,
+    defense_modifier: u8,
+    special_attack_modifier: u8,
+    special_defense_modifier: u8,
+    speed_modifier: u8,
 }
