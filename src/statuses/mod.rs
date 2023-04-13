@@ -67,11 +67,11 @@ fn test_non_volatile_status() {
         }
         _ => panic!("Poison test failed."),
     }
-    assert_ne!(paralyze, Some(NonVolatileStatusType::Sleep(2)));
-    assert_ne!(paralyze, Some(NonVolatileStatusType::Burn));
-    assert_ne!(paralyze, Some(NonVolatileStatusType::Paralysis));
-    assert_ne!(paralyze, Some(NonVolatileStatusType::Toxic(1)));
-    assert_ne!(paralyze, Some(NonVolatileStatusType::Freeze(1)));
+    assert_ne!(poison, Some(NonVolatileStatusType::Sleep(2)));
+    assert_ne!(poison, Some(NonVolatileStatusType::Burn));
+    assert_ne!(poison, Some(NonVolatileStatusType::Paralysis));
+    assert_ne!(poison, Some(NonVolatileStatusType::Toxic(1)));
+    assert_ne!(poison, Some(NonVolatileStatusType::Freeze(1)));
 
     // Burn test
     match burn {
@@ -106,10 +106,10 @@ fn test_non_volatile_status() {
     // Sleep test
     match sleep {
         Some(NonVolatileStatusType::Sleep(sleep_count)) => {
-            assert_eq!(toxic, Some(NonVolatileStatusType::Sleep(1)));
+            assert_eq!(sleep, Some(NonVolatileStatusType::Sleep(1)));
             sleep = Some(NonVolatileStatusType::Sleep(2));
-            assert_eq!(toxic, Some(NonVolatileStatusType::Sleep(2)));
-            assert_ne!(toxic, Some(NonVolatileStatusType::Sleep(3)));
+            assert_eq!(sleep, Some(NonVolatileStatusType::Sleep(2)));
+            assert_ne!(sleep, Some(NonVolatileStatusType::Sleep(3)));
         }
         _ => panic!("Sleep test failed."),
     }
