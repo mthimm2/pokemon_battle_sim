@@ -1,3 +1,4 @@
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum NonVolatileStatusType {
     Freeze(u8),
     Paralysis,
@@ -8,6 +9,7 @@ pub enum NonVolatileStatusType {
 }
 
 // Only Gen 1 volatile status types are included below.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum VolatileStatusType {
     Bound(u8),
     Confusion(u8),
