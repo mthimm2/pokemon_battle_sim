@@ -26,8 +26,8 @@ fn test_non_volatile_status() {
     let paralyze: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Paralysis);
     let poison: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Poison);
     let burn: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Burn);
-    let toxic: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Toxic(1));
-    let sleep: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Sleep(1));
+    let mut toxic: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Toxic(1));
+    let mut sleep: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Sleep(1));
     let mut frozen: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Freeze(1));
 
     // Frozen test
