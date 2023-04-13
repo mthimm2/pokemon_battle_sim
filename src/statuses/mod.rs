@@ -20,12 +20,20 @@ pub enum VolatileStatusType {
 
 #[test]
 fn test_non_volatile_status() {
-    let frozen: Option<NonVolatileStatusType::Freeze> = Some(NonVolatileStatusType::Freeze(0));
+    let mut frozen: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Freeze(1));
     match frozen {
-        Some(NonVolatileStatusType::Freeze) => {
-            println!("Freeze turns {}", Freeze);
+        Some(NonVolatileStatusType::Freeze(turn_count)) => {
+            assert_eq!(1, turn_count);
+            frozen = Some(NonVolatileStatusType::Freeze(turn_count + 1));
         }
+        Some(NonVolatileStatusType::Paralysis) => {}
+        Some(NonVolatileStatusType::Poison) => {}
+        Some(NonVolatileStatusType::Burn) => {}
+        Some(NonVolatileStatusType::Toxic(_toxic_counter)) => {}
+        Some(NonVolatileStatusType::Sleep(_sleep_counter)) => {}
+        None => println!("a"),
     }
+    assert_eq!(frozen, Some(NonVolatileStatusType::Freeze(2)));
 }
 
 #[test]
