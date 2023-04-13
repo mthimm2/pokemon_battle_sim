@@ -49,7 +49,7 @@ fn test_non_volatile_status() {
 
     // Paralysis test
     match paralyze {
-        Some(NonVolatileStatusType::Paralyze) => {
+        Some(NonVolatileStatusType::Paralysis) => {
             assert_eq!(paralyze, Some(NonVolatileStatusType::Paralysis));
         }
         _ => panic!("Paralysis test failed."),
@@ -85,7 +85,7 @@ fn test_non_volatile_status() {
     assert_ne!(burn, Some(NonVolatileStatusType::Paralysis));
     assert_ne!(burn, Some(NonVolatileStatusType::Toxic(21)));
     assert_ne!(burn, Some(NonVolatileStatusType::Freeze(0)));
-    
+
     // Toxic test
     match toxic {
         Some(NonVolatileStatusType::Toxic(toxic_count)) => {
@@ -99,10 +99,10 @@ fn test_non_volatile_status() {
     assert_ne!(toxic, Some(NonVolatileStatusType::Sleep(78)));
     assert_ne!(toxic, Some(NonVolatileStatusType::Poison));
     assert_ne!(toxic, Some(NonVolatileStatusType::Paralysis));
-    assert_ne!(toxic, Some(NonVolatileStatusType::Burn)));
+    assert_ne!(toxic, Some(NonVolatileStatusType::Burn));
     assert_ne!(toxic, Some(NonVolatileStatusType::Freeze(0)));
     assert_ne!(toxic, Some(NonVolatileStatusType::Toxic(38)));
-    
+
     // Sleep test
     match sleep {
         Some(NonVolatileStatusType::Sleep(sleep_count)) => {
@@ -119,7 +119,6 @@ fn test_non_volatile_status() {
     assert_ne!(sleep, Some(NonVolatileStatusType::Burn));
     assert_ne!(sleep, Some(NonVolatileStatusType::Freeze(0)));
     assert_ne!(sleep, Some(NonVolatileStatusType::Toxic(38)));
-
 }
 
 #[test]
