@@ -135,11 +135,12 @@ fn test_non_volatile_status() {
     assert_ne!(fainted, poison);
     assert_ne!(fainted, paralyze);
     assert_ne!(fainted, frozen);
-    assert_ne!(burn, Some(NonVolatileStatusType::Sleep(78)));
-    assert_ne!(burn, Some(NonVolatileStatusType::Poison));
-    assert_ne!(burn, Some(NonVolatileStatusType::Paralysis));
-    assert_ne!(burn, Some(NonVolatileStatusType::Toxic(21)));
-    assert_ne!(burn, Some(NonVolatileStatusType::Freeze(0)));
+    assert_ne!(fainted, Some(NonVolatileStatusType::Sleep(78)));
+    assert_ne!(fainted, Some(NonVolatileStatusType::Poison));
+    assert_ne!(fainted, Some(NonVolatileStatusType::Burn));
+    assert_ne!(fainted, Some(NonVolatileStatusType::Paralysis));
+    assert_ne!(fainted, Some(NonVolatileStatusType::Toxic(21)));
+    assert_ne!(fainted, Some(NonVolatileStatusType::Freeze(0)));
 }
 
 #[test]
