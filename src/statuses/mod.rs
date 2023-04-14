@@ -6,6 +6,7 @@ pub enum NonVolatileStatusType {
     Burn,
     Toxic(u8),
     Sleep(u8),
+    Fainted,
 }
 
 // Only Gen 1 volatile status types are included below.
@@ -26,6 +27,7 @@ fn test_non_volatile_status() {
     let paralyze: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Paralysis);
     let poison: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Poison);
     let burn: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Burn);
+    let fainted: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Fainted);
     let mut toxic: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Toxic(1));
     let mut sleep: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Sleep(1));
     let mut frozen: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Freeze(1));
@@ -119,6 +121,25 @@ fn test_non_volatile_status() {
     assert_ne!(sleep, Some(NonVolatileStatusType::Burn));
     assert_ne!(sleep, Some(NonVolatileStatusType::Freeze(0)));
     assert_ne!(sleep, Some(NonVolatileStatusType::Toxic(38)));
+
+    // Fainted test
+    match fainted {
+        Some(NonVolatileStatusType::Fainted) => {
+            assert_eq!(fainted, Some(NonVolatileStatusType::Fainted))
+        }
+        _ => panic!("Fainted test failed."),
+    }
+    assert_ne!(fainted, burn);
+    assert_ne!(fainted, sleep);
+    assert_ne!(fainted, toxic);
+    assert_ne!(fainted, poison);
+    assert_ne!(fainted, paralyze);
+    assert_ne!(fainted, frozen);
+    assert_ne!(burn, Some(NonVolatileStatusType::Sleep(78)));
+    assert_ne!(burn, Some(NonVolatileStatusType::Poison));
+    assert_ne!(burn, Some(NonVolatileStatusType::Paralysis));
+    assert_ne!(burn, Some(NonVolatileStatusType::Toxic(21)));
+    assert_ne!(burn, Some(NonVolatileStatusType::Freeze(0)));
 }
 
 #[test]
