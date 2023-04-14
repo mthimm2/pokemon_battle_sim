@@ -1,6 +1,9 @@
 mod typing;
 use typing::Types;
 
+mod statuses;
+use statuses::{NonVolatileStatusType, VolatileStatusType};
+
 pub struct Pokemon {
     name: String,
     type_1: Types,
@@ -11,7 +14,8 @@ pub struct Pokemon {
     special_attack: u16,
     special_defense: u16,
     speed: u16,
-    // status_condition: Option<StatusType>, // TODO: Implement status types
+    non_volatile_status_condition: Option<NonVolatileStatusType>,
+    volatile_status_condition: Option<VolatileStatusType>, // TODO: This might need to be a vector, because you could be bound, seeded, and poisoned simultaneously.
     attack_modifier: u8,
     defense_modifier: u8,
     special_attack_modifier: u8,
@@ -24,7 +28,6 @@ impl Pokemon {
     pub fn new(
         &self,
         name: String,
-        // status_condition: Option<StatusType>,
         type_1: Types,
         type_2: Option<Types>,
         hp: u16,
@@ -34,26 +37,25 @@ impl Pokemon {
         special_defense: u16,
         speed: u16,
         moves: Vec<Move>,
-        toxic_counter: u8,
-    ) {
+    ) -> Pokemon {
         Pokemon {
             name,
             type_1,
             type_2,
             hp,
-            status_condition: None,
             attack,
             defense,
             special_attack,
             special_defense,
             speed,
+            non_volatile_status_condition: None,
+            volatile_status_condition: None,
             attack_modifier: 1,
             defense_modifier: 1,
             special_attack_modifier: 1,
             special_defense_modifier: 1,
             speed_modifier: 1,
             moves,
-            toxic_counter: 0,
         }
     }
 
@@ -71,31 +73,32 @@ impl Pokemon {
     }
 
     pub fn take_status_damage(&mut self) {
-        // TODO: How does an Option<EnumType> work?
-        // This match statement will likely need to be refactored
         match self.status_condition {
-            Some(StatusType::Poison) => {
-                let poison_damage: u16 = ((self.hp as f64) * 0.125) as u16;
+            Some(NonVolatileStatusType::Poison) => {
+                let poison_damage: u16 = ((self.hp as f64) * 0.125) as u16; // 1/8th
                 faint_check(&poison_damage);
             }
-            Some(StatusType::Burn) => {
-                let burn_damage: u16 = ((self.hp as f64) * 0.0675) as u16;
+            Some(NonVolatileStatusType::Burn) => {
+                let burn_damage: u16 = ((self.hp as f64) * 0.0675) as u16; // 1/16th
                 faint_check(&burn_damage);
             }
-            Some(StatusType::Toxic) => {
+            Some(NonVolatileStatusType::Toxic(toxic_counter)) => {
+                // (toxic_counter / 16) % per turn
                 let toxic_damage: u16 =
                     (((self.toxic_counter / 16.0) as f64) * 0.0675 * (self.hp as f64)) as u16;
-                self.toxic_counter += 1;
+                self.non_volatile_status_condition =
+                    Some(NonVolatileStatusType::Toxic(toxic_counter + 1));
                 faint_check(&toxic_damage);
             }
-            Some(StatusType::LeechSeed) => {
+            Some(VolatileStatusType::Seeded) => {
                 let leech_seed_damage: u16 = (self.hp as f64 * 0.125) as u16;
                 faint_check(&leech_seed_damage);
             }
-            // TODO: Implement the binding moves
-            // Some(StatusType::Wrap) => {}
-            // Some(StatusType::Bind) => {}
-            // Some(StatusType::Clamp) => {}
+            Some(VolatileStatusType::Bound) => {
+                // This covers bind, wrap, and clamp
+                let bind_damage: u16 = (self.hp as f64 * 0.0675) as u16;
+                faint_check(&bind_damage);
+            }
             None => continue,
         }
     }
