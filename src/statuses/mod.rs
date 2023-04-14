@@ -88,7 +88,7 @@ fn test_non_volatile_status() {
 
     // Toxic test
     match toxic {
-        Some(NonVolatileStatusType::Toxic(toxic_count)) => {
+        Some(NonVolatileStatusType::Toxic(_toxic_count)) => {
             assert_eq!(toxic, Some(NonVolatileStatusType::Toxic(1)));
             toxic = Some(NonVolatileStatusType::Toxic(2));
             assert_eq!(toxic, Some(NonVolatileStatusType::Toxic(2)));
@@ -105,7 +105,7 @@ fn test_non_volatile_status() {
 
     // Sleep test
     match sleep {
-        Some(NonVolatileStatusType::Sleep(sleep_count)) => {
+        Some(NonVolatileStatusType::Sleep(_sleep_count)) => {
             assert_eq!(sleep, Some(NonVolatileStatusType::Sleep(1)));
             sleep = Some(NonVolatileStatusType::Sleep(2));
             assert_eq!(sleep, Some(NonVolatileStatusType::Sleep(2)));
