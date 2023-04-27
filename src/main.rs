@@ -1,4 +1,6 @@
+mod statuses;
 mod typing;
+use statuses::{NonVolatileStatusType, VolatileStatusType};
 use std::collections::HashMap;
 use typing::*;
 
