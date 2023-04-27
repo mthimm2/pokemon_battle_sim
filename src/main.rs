@@ -1,3 +1,4 @@
+mod pokemon;
 mod statuses;
 mod typing;
 use statuses::{NonVolatileStatusType, VolatileStatusType};

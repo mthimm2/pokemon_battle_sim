@@ -1,8 +1,5 @@
-mod typing;
-use typing::Types;
-
-mod statuses;
-use statuses::{NonVolatileStatusType, VolatileStatusType};
+use crate::statuses::{NonVolatileStatusType, VolatileStatusType};
+use crate::typing::Types;
 
 pub struct Pokemon {
     name: String,
@@ -16,12 +13,14 @@ pub struct Pokemon {
     speed: u16,
     non_volatile_status_condition: Option<NonVolatileStatusType>,
     volatile_status_condition: Option<VolatileStatusType>, // TODO: This needs to be a vector, because you could be bound and seeded simultaneously.
+
+    // TODO: These should be floats. Think about Growl, etc lowering attack.
     attack_modifier: u8,
     defense_modifier: u8,
     special_attack_modifier: u8,
     special_defense_modifier: u8,
     speed_modifier: u8,
-    moves: Vec<Move>,
+    // moves: Vec<Move>,
 }
 
 impl Pokemon {
@@ -37,6 +36,7 @@ impl Pokemon {
         special_defense: u16,
         speed: u16,
     ) -> Pokemon {
+        // TODO: Make helper functions to handle all of these fields being instantiated
         Pokemon {
             name,
             type_1,
@@ -54,7 +54,7 @@ impl Pokemon {
             special_attack_modifier: 1,
             special_defense_modifier: 1,
             speed_modifier: 1,
-            moves: Vec::new(),
+            // moves: Vec::new(),
         }
     }
 
@@ -63,9 +63,9 @@ impl Pokemon {
     fn faint_check(&mut self, damage: u16) {
         if damage >= self.hp {
             self.hp = 0;
-            self.status_condition = Some(NonVolatileStatusType::Fainted);
+            self.non_volatile_status_condition = Some(NonVolatileStatusType::Fainted);
         } else {
-            self.hp -= incoming_damage;
+            self.hp -= damage;
         }
     }
 
@@ -74,17 +74,17 @@ impl Pokemon {
     // If a status condition already exists, prints out the prompts
     // Panics if a fainted Pokemon is still on the field
     fn non_volatile_status_check(&mut self, incoming_status: NonVolatileStatusType) {
-        match self.non_volatile_status_condition {
+        match &self.non_volatile_status_condition {
             None => self.non_volatile_status_condition = Some(incoming_status),
             Some(non_volatile_condition) => {
                 print!("{} is already ", self.name);
                 match non_volatile_condition {
-                    Freeze => print("Frozen!\n"),
-                    Paralysis => print("Paralyzed!\n"),
-                    Burn => print("Burned!\n"),
-                    Sleep => print("Sleeping!\n"),
-                    Fainted => panic!("We should not be here!"),
-                    _ => print("Poisoned!\n"), // Toxic case
+                    NonVolatileStatusType::Freeze(turn_count) => print!("Frozen!\n"),
+                    NonVolatileStatusType::Paralysis => print!("Paralyzed!\n"),
+                    NonVolatileStatusType::Burn => print!("Burned!\n"),
+                    NonVolatileStatusType::Sleep(turn_count) => print!("Sleeping!\n"),
+                    NonVolatileStatusType::Fainted => panic!("We should not be here!"),
+                    _ => print!("Poisoned!\n"), // Toxic and Poison case
                 }
             }
         }
@@ -115,38 +115,58 @@ impl Pokemon {
 
     // Wrapper function for the faint check in the context of direct damage
     pub fn take_attack_damage(&mut self, incoming_damage: u16) {
-        faint_check(&incoming_damage);
+        self.faint_check(incoming_damage);
     }
 
     // Wrapper function for the faint check in the context of status damage
     pub fn take_status_damage(&mut self) {
-        match self.status_condition {
-            Some(NonVolatileStatusType::Poison) => {
-                let poison_damage: u16 = ((self.hp as f64) * 0.125) as u16; // 1/8th
-                faint_check(&poison_damage);
+        // Damage from non-volatile statuses first
+        match &self.non_volatile_status_condition {
+            Some(non_volatile_condition) => {
+                match non_volatile_condition {
+                    NonVolatileStatusType::Poison => {
+                        // TODO: Need a new field to facilitate correct poison and burn damage
+                        // Call field max_hp
+                        let poison_damage: u16 = ((self.hp as f64) * 0.125) as u16; // 1/8th
+                        self.faint_check(poison_damage);
+                    }
+                    NonVolatileStatusType::Burn => {
+                        let burn_damage: u16 = ((self.hp as f64) * 0.0675) as u16; // 1/16th
+                        self.faint_check(burn_damage);
+                    }
+                    NonVolatileStatusType::Toxic(toxic_counter) => {
+                        // (toxic_counter / 16) % per turn
+                        let toxic_damage: u16 =
+                            (((toxic_counter / 16) as f64) * 0.0675 * (self.hp as f64)) as u16;
+                        self.non_volatile_status_condition =
+                            Some(NonVolatileStatusType::Toxic(toxic_counter + 1));
+                        self.faint_check(toxic_damage);
+                    }
+                    _ => self.faint_check(0),
+                }
             }
-            Some(NonVolatileStatusType::Burn) => {
-                let burn_damage: u16 = ((self.hp as f64) * 0.0675) as u16; // 1/16th
-                faint_check(&burn_damage);
+            None => self.faint_check(0),
+        }
+        // Damage from volatile statuses second
+        match &self.volatile_status_condition {
+            Some(volatile_condition) => {
+                match volatile_condition {
+                    VolatileStatusType::Seeded => {
+                        let leech_seed_damage: u16 = (self.hp as f64 * 0.125) as u16;
+                        self.faint_check(leech_seed_damage);
+                    }
+                    VolatileStatusType::Bound(turn_count) => {
+                        // This covers bind, wrap, and clamp
+                        let bind_damage: u16 = (self.hp as f64 * 0.0675) as u16;
+                        self.faint_check(bind_damage);
+                    }
+                    VolatileStatusType::Confusion(turn_count) => {
+                        todo!(); // TODO: Implement confusion damage check
+                    }
+                    _ => self.faint_check(0),
+                }
             }
-            Some(NonVolatileStatusType::Toxic(toxic_counter)) => {
-                // (toxic_counter / 16) % per turn
-                let toxic_damage: u16 =
-                    (((self.toxic_counter / 16.0) as f64) * 0.0675 * (self.hp as f64)) as u16;
-                self.non_volatile_status_condition =
-                    Some(NonVolatileStatusType::Toxic(toxic_counter + 1));
-                faint_check(&toxic_damage);
-            }
-            Some(VolatileStatusType::Seeded) => {
-                let leech_seed_damage: u16 = (self.hp as f64 * 0.125) as u16;
-                faint_check(&leech_seed_damage);
-            }
-            Some(VolatileStatusType::Bound) => {
-                // This covers bind, wrap, and clamp
-                let bind_damage: u16 = (self.hp as f64 * 0.0675) as u16;
-                faint_check(&bind_damage);
-            }
-            None => continue,
+            None => self.faint_check(0),
         }
     }
 
@@ -167,7 +187,11 @@ impl Pokemon {
 }
 
 // TODO: Write tests for each function in the implementation above
-#[test]
-fn test_create_pokemon() {
-    todo!();
+#[cfg(test)]
+mod pokemon_tests {
+    use super::*;
+    #[test]
+    fn test_create_pokemon() {
+        println!("This worked!");
+    }
 }
