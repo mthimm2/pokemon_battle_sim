@@ -167,3 +167,7 @@ impl Pokemon {
 }
 
 // TODO: Write tests for each function in the implementation above
+#[test]
+fn test_create_pokemon() {
+    todo!();
+}
