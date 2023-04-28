@@ -21,6 +21,8 @@ pub struct Pokemon {
     special_defense_modifier: f64,
     speed_modifier: f64,
     // moves: Vec<Move>,
+    // TODO: Critical Hit modifier field
+    // TODO: Evasion modifier field
 }
 
 impl Pokemon {
@@ -68,9 +70,11 @@ impl Pokemon {
             self.hp = 0.0;
             self.non_volatile_status_condition = Some(NonVolatileStatusType::Fainted);
         } else {
-            // TODO: Probably should have a pokemon faint if it's hp is something like
-            // 0.6 hp.
             self.hp -= damage;
+            if self.hp < 1.0 {
+                self.hp = 0.0;
+                self.non_volatile_status_condition = Some(NonVolatileStatusType::Fainted);
+            }
         }
     }
 
@@ -130,8 +134,6 @@ impl Pokemon {
             Some(non_volatile_condition) => {
                 match non_volatile_condition {
                     NonVolatileStatusType::Poison => {
-                        // TODO: Need a new field to facilitate correct poison and burn damage
-                        // Call field max_hp
                         let poison_damage: f64 = self.max_hp * 0.125; // 1/8th
                         self.faint_check(poison_damage);
                     }
