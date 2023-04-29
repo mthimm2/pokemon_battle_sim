@@ -2550,6 +2550,23 @@
     }
   },
   {
+    "name": "Mewtwo",
+    "moves": [
+      "Psychic",
+      "Recover",
+      "Amnesia",
+      "Blizzard"
+    ],
+    "stats": {
+      "HP": 415,
+      "Attack": 318,
+      "Defense": 278,
+      "Sp.Atk": 406,
+      "Sp.Def": 278,
+      "Speed": 358
+    }
+  },
+  {
     "name": "Mew",
     "moves": [
       "Psychic",
