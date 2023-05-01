@@ -1,8 +1,7 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
-use crate::statuses::{Damage, NonVolatileStatusType, VolatileStatusType};
+use crate::statuses::{Damage, NonVolatileStatusType, Status, VolatileStatusType};
 use crate::typing::Types;
 
-#[derive(Debug)]
 pub struct Pokemon {
     name: String,
     type_1: Types,
@@ -14,8 +13,9 @@ pub struct Pokemon {
     special_attack: u16,
     special_defense: u16,
     speed: u16,
-    non_volatile_status_condition: Option<NonVolatileStatusType>,
-    volatile_status_condition: Option<VolatileStatusType>, // TODO: This needs to be a vector, because you could be bound, seeded, and confused simultaneously.
+    // non_volatile_status_condition: Option<NonVolatileStatusType>,
+    // volatile_status_condition: Option<VolatileStatusType>, // TODO: This needs to be a vector, because you could be bound, seeded, and confused simultaneously.
+    status_conditions: Status,
     attack_modifier: f64,
     defense_modifier: f64,
     special_attack_modifier: f64,
@@ -42,6 +42,11 @@ impl Pokemon {
         let mut special_attack: u16 = 0;
         let mut special_defense: u16 = 0;
         let mut speed: u16 = 0;
+        let mut status_conditions: Status = Status {
+            non_vol: None,
+            vol: Vec::new(),
+            turn_count: 0,
+        };
         //let mut moves: Vec<Move> = Vec::new();
 
         Pokemon {
@@ -55,8 +60,9 @@ impl Pokemon {
             special_attack,
             special_defense,
             speed,
-            non_volatile_status_condition: None,
-            volatile_status_condition: None,
+            status_conditions,
+            // non_volatile_status_condition: None,
+            // volatile_status_condition: None,
             attack_modifier: 1.0,
             defense_modifier: 1.0,
             special_attack_modifier: 1.0,
@@ -71,7 +77,7 @@ impl Pokemon {
     fn faint_check(&mut self, damage: f64) {
         if self.hp - damage < 1.0 {
             self.hp = 0.0;
-            self.non_volatile_status_condition = Some(NonVolatileStatusType::Fainted);
+            self.status_conditions.non_vol = Some(NonVolatileStatusType::Fainted);
         } else {
             self.hp -= damage;
         }
@@ -82,18 +88,18 @@ impl Pokemon {
     // If a status condition already exists, prints out the prompts
     // Panics if a fainted Pokemon is still on the field
     fn non_volatile_status_check(&mut self, incoming_status: NonVolatileStatusType) {
-        match &self.non_volatile_status_condition {
+        match &self.status_conditions.non_vol {
             // TODO: Put in handling for burn halving attack and paralysis halving speed.
-            None => self.non_volatile_status_condition = Some(incoming_status),
+            None => self.status_conditions.non_vol = Some(incoming_status),
             // If we're already statused and someone's trying to status us again,
             // we print out that we're already afflicted with status X
             Some(non_volatile_condition) => {
                 print!("{} is already ", self.name);
                 match non_volatile_condition {
-                    NonVolatileStatusType::Freeze(turn_count) => println!("Frozen!"),
+                    NonVolatileStatusType::Freeze => println!("Frozen!"),
                     NonVolatileStatusType::Paralysis => println!("Paralyzed!"),
                     NonVolatileStatusType::Burn => println!("Burned!"),
-                    NonVolatileStatusType::Sleep(turn_count) => println!("Sleeping!"),
+                    NonVolatileStatusType::Sleep => println!("Sleeping!"),
                     NonVolatileStatusType::Fainted => panic!("We should not be here!"),
                     _ => println!("Poisoned!"), // Toxic and Poison case
                 }
@@ -104,23 +110,17 @@ impl Pokemon {
     // Handles assigning a volatile status condition to the Pokemon on the field
     // TODO: Figure out how to handle a vector of volatile status conditions
     fn volatile_status_check(&mut self, incoming_status: VolatileStatusType) {
-        match self.volatile_status_condition {
-            None => self.volatile_status_condition = Some(incoming_status),
-            Some(volatile_condition) => {
+        let mut new_status_flag: bool = false;
+        for vol_status in self.status_conditions.vol.iter() {
+            if incoming_status == vol_status.as_ref().unwrap().0 {
                 println!("But it failed!");
-                // if incoming_status == volatile_condition {
-                //     print!("{} is already ", self.name);
-                //     match incoming_status {
-                //         Bound => print!("Bound!\n"),
-                //         Confusion => print!("Confused!\n"),
-                //         Flinch => continue,
-                //         Seeded => print!("Seeded!\n"),
-                //         Rampage => continue, // TODO: This might not be correct for a move like Thrash
-                //         Charging => continue, // TODO: This might not be correct for a move like Sky Attack
-                //         Recharging => continue, // TODO: This might not be correct for a move like Hyper Beam
-                //     }
-                // } else {}
+            } else {
+                new_status_flag = true;
+                break;
             }
+        }
+        if new_status_flag == true {
+            self.status_conditions.vol.push(Some((incoming_status, 1)));
         }
     }
 
@@ -131,102 +131,105 @@ impl Pokemon {
 
     // Wrapper function for the faint check in the context of status damage
     pub fn take_status_damage(&mut self) {
+        let damages = self.status_conditions.damage(&self.max_hp);
+        self.faint_check(damages.0);
+        self.faint_check(damages.1);
         // Damage from non-volatile statuses first
-        let mut non_volatile_status_damage: f64 = 0.0;
-        let mut volatile_status_damage: f64 = 0.0;
+        // let mut non_volatile_status_damage: f64 = 0.0;
+        // let mut volatile_status_damage: f64 = 0.0;
 
-        match self.non_volatile_status_condition.take() {
-            Some(non_volatile_condition) => {
-                match non_volatile_condition {
-                    NonVolatileStatusType::Poison => {
-                        non_volatile_status_damage =
-                            non_volatile_condition.status_damage(&self.max_hp);
-                        self.non_volatile_status_condition = Some(NonVolatileStatusType::Poison);
-                    }
-                    NonVolatileStatusType::Burn => {
-                        non_volatile_status_damage =
-                            non_volatile_condition.status_damage(&self.max_hp);
-                        self.non_volatile_status_condition = Some(NonVolatileStatusType::Burn);
-                    }
-                    NonVolatileStatusType::Toxic(toxic_counter) => {
-                        // (toxic_counter / 16) % per turn
-                        // let toxic_damage: f64 = (*toxic_counter as f64) * 0.0625 * self.max_hp;
-                        non_volatile_status_damage =
-                            non_volatile_condition.status_damage(&self.max_hp);
-                        self.non_volatile_status_condition =
-                            Some(NonVolatileStatusType::Toxic(toxic_counter + 1));
-                    }
-                    NonVolatileStatusType::Freeze(turn_count) => {
-                        non_volatile_status_damage =
-                            non_volatile_condition.status_damage(&self.max_hp);
-                        self.non_volatile_status_condition =
-                            Some(NonVolatileStatusType::Freeze(turn_count + 1));
-                    }
-                    NonVolatileStatusType::Paralysis => {
-                        non_volatile_status_damage =
-                            non_volatile_condition.status_damage(&self.max_hp);
-                        self.non_volatile_status_condition = Some(NonVolatileStatusType::Paralysis);
-                    }
-                    NonVolatileStatusType::Sleep(turn_count) => {
-                        non_volatile_status_damage =
-                            non_volatile_condition.status_damage(&self.max_hp);
-                        self.non_volatile_status_condition =
-                            Some(NonVolatileStatusType::Sleep(turn_count + 1));
-                    }
-                    NonVolatileStatusType::Fainted => {
-                        panic!("We should not be here! We should have been fainted!");
-                    }
-                }
-            }
-            None => non_volatile_status_damage = 0.0,
-        }
+        // match self.non_volatile_status_condition.take() {
+        //     Some(non_volatile_condition) => {
+        //         match non_volatile_condition {
+        //             NonVolatileStatusType::Poison => {
+        //                 non_volatile_status_damage =
+        //                     non_volatile_condition.status_damage(&self.max_hp);
+        //                 self.non_volatile_status_condition = Some(NonVolatileStatusType::Poison);
+        //             }
+        //             NonVolatileStatusType::Burn => {
+        //                 non_volatile_status_damage =
+        //                     non_volatile_condition.status_damage(&self.max_hp);
+        //                 self.non_volatile_status_condition = Some(NonVolatileStatusType::Burn);
+        //             }
+        //             NonVolatileStatusType::Toxic(toxic_counter) => {
+        //                 // (toxic_counter / 16) % per turn
+        //                 // let toxic_damage: f64 = (*toxic_counter as f64) * 0.0625 * self.max_hp;
+        //                 non_volatile_status_damage =
+        //                     non_volatile_condition.status_damage(&self.max_hp);
+        //                 self.non_volatile_status_condition =
+        //                     Some(NonVolatileStatusType::Toxic(toxic_counter + 1));
+        //             }
+        //             NonVolatileStatusType::Freeze(turn_count) => {
+        //                 non_volatile_status_damage =
+        //                     non_volatile_condition.status_damage(&self.max_hp);
+        //                 self.non_volatile_status_condition =
+        //                     Some(NonVolatileStatusType::Freeze(turn_count + 1));
+        //             }
+        //             NonVolatileStatusType::Paralysis => {
+        //                 non_volatile_status_damage =
+        //                     non_volatile_condition.status_damage(&self.max_hp);
+        //                 self.non_volatile_status_condition = Some(NonVolatileStatusType::Paralysis);
+        //             }
+        //             NonVolatileStatusType::Sleep(turn_count) => {
+        //                 non_volatile_status_damage =
+        //                     non_volatile_condition.status_damage(&self.max_hp);
+        //                 self.non_volatile_status_condition =
+        //                     Some(NonVolatileStatusType::Sleep(turn_count + 1));
+        //             }
+        //             NonVolatileStatusType::Fainted => {
+        //                 panic!("We should not be here! We should have been fainted!");
+        //             }
+        //         }
+        //     }
+        //     None => non_volatile_status_damage = 0.0,
+        // }
 
-        // Leave it to each type to calculate its damage, then pass that to the faint_check function
-        self.faint_check(non_volatile_status_damage);
+        // // Leave it to each type to calculate its damage, then pass that to the faint_check function
+        // self.faint_check(non_volatile_status_damage);
 
-        // Damage from volatile statuses second
-        match self.volatile_status_condition.take() {
-            Some(volatile_condition) => {
-                match volatile_condition {
-                    VolatileStatusType::Seeded => {
-                        volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-                        self.volatile_status_condition = Some(VolatileStatusType::Seeded);
-                    }
-                    VolatileStatusType::Bound(turn_count) => {
-                        // This covers bind, wrap, and clamp
-                        volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-                        self.volatile_status_condition =
-                            Some(VolatileStatusType::Bound(turn_count + 1));
-                    }
-                    VolatileStatusType::Confusion(turn_count) => {
-                        volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-                        self.volatile_status_condition =
-                            Some(VolatileStatusType::Confusion(turn_count + 1));
-                    }
-                    VolatileStatusType::Flinch => {
-                        volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-                        self.volatile_status_condition = Some(VolatileStatusType::Flinch);
-                    }
-                    VolatileStatusType::Rampage(turn_count) => {
-                        volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-                        self.volatile_status_condition =
-                            Some(VolatileStatusType::Rampage(turn_count + 1));
-                    }
-                    VolatileStatusType::Charging(turn_count) => {
-                        volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-                        self.volatile_status_condition =
-                            Some(VolatileStatusType::Charging(turn_count + 1));
-                    }
-                    VolatileStatusType::Recharging(turn_count) => {
-                        volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-                        self.volatile_status_condition =
-                            Some(VolatileStatusType::Recharging(turn_count + 1));
-                    }
-                }
-            }
-            None => self.faint_check(0.0),
-        }
-        self.faint_check(volatile_status_damage);
+        // // Damage from volatile statuses second
+        // match self.volatile_status_condition.take() {
+        //     Some(volatile_condition) => {
+        //         match volatile_condition {
+        //             VolatileStatusType::Seeded => {
+        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
+        //                 self.volatile_status_condition = Some(VolatileStatusType::Seeded);
+        //             }
+        //             VolatileStatusType::Bound(turn_count) => {
+        //                 // This covers bind, wrap, and clamp
+        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
+        //                 self.volatile_status_condition =
+        //                     Some(VolatileStatusType::Bound(turn_count + 1));
+        //             }
+        //             VolatileStatusType::Confusion(turn_count) => {
+        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
+        //                 self.volatile_status_condition =
+        //                     Some(VolatileStatusType::Confusion(turn_count + 1));
+        //             }
+        //             VolatileStatusType::Flinch => {
+        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
+        //                 self.volatile_status_condition = Some(VolatileStatusType::Flinch);
+        //             }
+        //             VolatileStatusType::Rampage(turn_count) => {
+        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
+        //                 self.volatile_status_condition =
+        //                     Some(VolatileStatusType::Rampage(turn_count + 1));
+        //             }
+        //             VolatileStatusType::Charging(turn_count) => {
+        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
+        //                 self.volatile_status_condition =
+        //                     Some(VolatileStatusType::Charging(turn_count + 1));
+        //             }
+        //             VolatileStatusType::Recharging(turn_count) => {
+        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
+        //                 self.volatile_status_condition =
+        //                     Some(VolatileStatusType::Recharging(turn_count + 1));
+        //             }
+        //         }
+        //     }
+        //     None => self.faint_check(0.0),
+        // }
+        // self.faint_check(volatile_status_damage);
     }
 
     // Reads the relevant moveset from the file and returns it as a vector of strings
