@@ -132,8 +132,8 @@ impl Pokemon {
     // Wrapper function for the faint check in the context of status damage
     pub fn take_status_damage(&mut self) {
         // Damage from non-volatile statuses first
-        let mut non_volatile_status_damage = 0.0;
-        let mut volatile_status_damage = 0.0;
+        let mut non_volatile_status_damage: f64 = 0.0;
+        let mut volatile_status_damage: f64 = 0.0;
 
         match self.non_volatile_status_condition.take() {
             Some(non_volatile_condition) => {
