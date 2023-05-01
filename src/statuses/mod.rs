@@ -47,29 +47,31 @@ impl Damage for VolatileStatusType {
         }
     }
 }
+#[cfg(test)]
+mod status_types_tests {
+    use super::*;
+    #[test]
+    #[should_panic]
+    fn test_non_volatile_status() {
+        // All non-volatile status types
+        let paralyze: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Paralysis);
+        let poison: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Poison);
+        let burn: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Burn);
+        let fainted: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Fainted);
+        let mut toxic: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Toxic(1));
+        let mut sleep: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Sleep(1));
+        let mut frozen: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Freeze(1));
 
-#[test]
-#[should_panic]
-fn test_non_volatile_status() {
-    // All non-volatile status types
-    let paralyze: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Paralysis);
-    let poison: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Poison);
-    let burn: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Burn);
-    let fainted: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Fainted);
-    let mut toxic: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Toxic(1));
-    let mut sleep: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Sleep(1));
-    let mut frozen: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Freeze(1));
-
-    // Frozen test
-    match frozen {
-        Some(NonVolatileStatusType::Freeze(turn_count)) => {
-            // Check initial value of the enum and then increment via reassignment and check again
-            assert_eq!(1, turn_count);
-            frozen = Some(NonVolatileStatusType::Freeze(turn_count + 1));
-            assert_eq!(frozen, Some(NonVolatileStatusType::Freeze(2)));
+        // Frozen test
+        match frozen {
+            Some(NonVolatileStatusType::Freeze(turn_count)) => {
+                // Check initial value of the enum and then increment via reassignment and check again
+                assert_eq!(1, turn_count);
+                frozen = Some(NonVolatileStatusType::Freeze(turn_count + 1));
+                assert_eq!(frozen, Some(NonVolatileStatusType::Freeze(2)));
+            }
+            _ => panic!("Frozen test failed."),
         }
-        _ => panic!("Frozen test failed."),
-    }
     assert_ne!(frozen, Some(NonVolatileStatusType::Sleep(2)));
     assert_ne!(frozen, Some(NonVolatileStatusType::Paralysis));
     assert_ne!(frozen, Some(NonVolatileStatusType::Burn));
@@ -178,27 +180,27 @@ fn test_non_volatile_status() {
     assert_eq!(0.0, fainted.as_ref().unwrap().status_damage(100.0));
 }
 
-#[test]
-fn test_volatile_status() {
-    // All volatile status types
-    let mut bound: Option<VolatileStatusType> = Some(VolatileStatusType::Bound(1));
-    let mut confusion: Option<VolatileStatusType> = Some(VolatileStatusType::Confusion(1));
-    let flinch: Option<VolatileStatusType> = Some(VolatileStatusType::Flinch);
-    let seeded: Option<VolatileStatusType> = Some(VolatileStatusType::Seeded);
-    let mut rampage: Option<VolatileStatusType> = Some(VolatileStatusType::Rampage(1));
-    let mut charging: Option<VolatileStatusType> = Some(VolatileStatusType::Charging(1));
-    let mut recharging: Option<VolatileStatusType> = Some(VolatileStatusType::Recharging(1));
+    #[test]
+    fn test_volatile_status() {
+        // All volatile status types
+        let mut bound: Option<VolatileStatusType> = Some(VolatileStatusType::Bound(1));
+        let mut confusion: Option<VolatileStatusType> = Some(VolatileStatusType::Confusion(1));
+        let flinch: Option<VolatileStatusType> = Some(VolatileStatusType::Flinch);
+        let seeded: Option<VolatileStatusType> = Some(VolatileStatusType::Seeded);
+        let mut rampage: Option<VolatileStatusType> = Some(VolatileStatusType::Rampage(1));
+        let mut charging: Option<VolatileStatusType> = Some(VolatileStatusType::Charging(1));
+        let mut recharging: Option<VolatileStatusType> = Some(VolatileStatusType::Recharging(1));
 
-    // BOUND TEST
-    match bound {
-        Some(VolatileStatusType::Bound(bind_count)) => {
-            assert_eq!(bound, Some(VolatileStatusType::Bound(1)));
-            assert_eq!(bind_count, 1);
-            bound = Some(VolatileStatusType::Bound(2));
-            assert_eq!(bound, Some(VolatileStatusType::Bound(2)));
+        // BOUND TEST
+        match bound {
+            Some(VolatileStatusType::Bound(bind_count)) => {
+                assert_eq!(bound, Some(VolatileStatusType::Bound(1)));
+                assert_eq!(bind_count, 1);
+                bound = Some(VolatileStatusType::Bound(2));
+                assert_eq!(bound, Some(VolatileStatusType::Bound(2)));
+            }
+            _ => panic!("Bind test failed"),
         }
-        _ => panic!("Bind test failed"),
-    }
     assert_ne!(bound, confusion);
     assert_ne!(bound, flinch);
     assert_ne!(bound, seeded);
@@ -213,16 +215,16 @@ fn test_volatile_status() {
     assert_ne!(bound, Some(VolatileStatusType::Recharging(1)));
     assert_eq!(6.25, bound.as_ref().unwrap().status_damage(100.0));
 
-    // CONFUSION TEST
-    match confusion {
-        Some(VolatileStatusType::Confusion(confusion_count)) => {
-            assert_eq!(confusion, Some(VolatileStatusType::Confusion(1)));
-            assert_eq!(confusion_count, 1);
-            confusion = Some(VolatileStatusType::Confusion(2));
-            assert_eq!(confusion, Some(VolatileStatusType::Confusion(2)));
+        // CONFUSION TEST
+        match confusion {
+            Some(VolatileStatusType::Confusion(confusion_count)) => {
+                assert_eq!(confusion, Some(VolatileStatusType::Confusion(1)));
+                assert_eq!(confusion_count, 1);
+                confusion = Some(VolatileStatusType::Confusion(2));
+                assert_eq!(confusion, Some(VolatileStatusType::Confusion(2)));
+            }
+            _ => panic!("Confusion test failed"),
         }
-        _ => panic!("Confusion test failed"),
-    }
     assert_ne!(confusion, bound);
     assert_ne!(confusion, flinch);
     assert_ne!(confusion, seeded);
@@ -237,13 +239,13 @@ fn test_volatile_status() {
     assert_ne!(confusion, Some(VolatileStatusType::Recharging(1)));
     // TODO: Write assert for confusion damage given hp, attack, and defense of confused pokemon
 
-    // FLINCH TEST
-    match flinch {
-        Some(VolatileStatusType::Flinch) => {
-            assert_eq!(flinch, Some(VolatileStatusType::Flinch));
+        // FLINCH TEST
+        match flinch {
+            Some(VolatileStatusType::Flinch) => {
+                assert_eq!(flinch, Some(VolatileStatusType::Flinch));
+            }
+            _ => panic!("Flinch test failed"),
         }
-        _ => panic!("Flinch test failed"),
-    }
     assert_ne!(flinch, bound);
     assert_ne!(flinch, confusion);
     assert_ne!(flinch, seeded);
@@ -258,13 +260,13 @@ fn test_volatile_status() {
     assert_ne!(flinch, Some(VolatileStatusType::Recharging(1)));
     assert_eq!(0.0, flinch.as_ref().unwrap().status_damage(100.0));
 
-    // SEEDED TEST
-    match seeded {
-        Some(VolatileStatusType::Seeded) => {
-            assert_eq!(seeded, Some(VolatileStatusType::Seeded));
+        // SEEDED TEST
+        match seeded {
+            Some(VolatileStatusType::Seeded) => {
+                assert_eq!(seeded, Some(VolatileStatusType::Seeded));
+            }
+            _ => panic!("Seeded test failed"),
         }
-        _ => panic!("Seeded test failed"),
-    }
     assert_ne!(seeded, bound);
     assert_ne!(seeded, confusion);
     assert_ne!(seeded, flinch);
@@ -279,16 +281,16 @@ fn test_volatile_status() {
     assert_ne!(seeded, Some(VolatileStatusType::Recharging(1)));
     assert_eq!(12.5, seeded.as_ref().unwrap().status_damage(100.0));
 
-    // RAMPAGE TEST
-    match rampage {
-        Some(VolatileStatusType::Rampage(rampage_count)) => {
-            assert_eq!(rampage, Some(VolatileStatusType::Rampage(1)));
-            assert_eq!(rampage_count, 1);
-            rampage = Some(VolatileStatusType::Rampage(2));
-            assert_eq!(rampage, Some(VolatileStatusType::Rampage(2)));
+        // RAMPAGE TEST
+        match rampage {
+            Some(VolatileStatusType::Rampage(rampage_count)) => {
+                assert_eq!(rampage, Some(VolatileStatusType::Rampage(1)));
+                assert_eq!(rampage_count, 1);
+                rampage = Some(VolatileStatusType::Rampage(2));
+                assert_eq!(rampage, Some(VolatileStatusType::Rampage(2)));
+            }
+            _ => panic!("Rampage test failed"),
         }
-        _ => panic!("Rampage test failed"),
-    }
     assert_ne!(rampage, bound);
     assert_ne!(rampage, flinch);
     assert_ne!(rampage, seeded);
@@ -303,16 +305,16 @@ fn test_volatile_status() {
     assert_ne!(rampage, Some(VolatileStatusType::Recharging(1)));
     assert_eq!(0.0, rampage.as_ref().unwrap().status_damage(100.0));
 
-    // CHARGING TEST
-    match charging {
-        Some(VolatileStatusType::Charging(charge_count)) => {
-            assert_eq!(charging, Some(VolatileStatusType::Charging(1)));
-            assert_eq!(charge_count, 1);
-            charging = Some(VolatileStatusType::Charging(2));
-            assert_eq!(charging, Some(VolatileStatusType::Charging(2)));
+        // CHARGING TEST
+        match charging {
+            Some(VolatileStatusType::Charging(charge_count)) => {
+                assert_eq!(charging, Some(VolatileStatusType::Charging(1)));
+                assert_eq!(charge_count, 1);
+                charging = Some(VolatileStatusType::Charging(2));
+                assert_eq!(charging, Some(VolatileStatusType::Charging(2)));
+            }
+            _ => panic!("Charging test failed"),
         }
-        _ => panic!("Charging test failed"),
-    }
     assert_ne!(charging, bound);
     assert_ne!(charging, flinch);
     assert_ne!(charging, seeded);
@@ -327,17 +329,17 @@ fn test_volatile_status() {
     assert_ne!(charging, Some(VolatileStatusType::Recharging(1)));
     assert_eq!(0.0, charging.as_ref().unwrap().status_damage(100.0));
 
-    // RECHARGING TEST
-    match recharging {
-        Some(VolatileStatusType::Recharging(recharge_count)) => {
-            assert_eq!(recharging, Some(VolatileStatusType::Recharging(1)));
-            assert_eq!(recharge_count, 1);
-            recharging = Some(VolatileStatusType::Recharging(2));
-            assert_eq!(recharging, Some(VolatileStatusType::Recharging(2)));
+        // RECHARGING TEST
+        match recharging {
+            Some(VolatileStatusType::Recharging(recharge_count)) => {
+                assert_eq!(recharging, Some(VolatileStatusType::Recharging(1)));
+                assert_eq!(recharge_count, 1);
+                recharging = Some(VolatileStatusType::Recharging(2));
+                assert_eq!(recharging, Some(VolatileStatusType::Recharging(2)));
+            }
+            _ => panic!("Recharging test failed"),
         }
-        _ => panic!("Recharging test failed"),
-    }
-    assert_ne!(recharging, bound);
+        assert_ne!(recharging, bound);
     assert_ne!(recharging, flinch);
     assert_ne!(recharging, seeded);
     assert_ne!(recharging, confusion);
@@ -350,4 +352,5 @@ fn test_volatile_status() {
     assert_ne!(recharging, Some(VolatileStatusType::Rampage(1)));
     assert_ne!(recharging, Some(VolatileStatusType::Charging(1)));
     assert_eq!(0.0, recharging.as_ref().unwrap().status_damage(100.0));
+    }
 }

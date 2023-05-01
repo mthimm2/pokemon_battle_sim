@@ -1,0 +1,2586 @@
+[
+  {
+    "name": "Bulbasaur",
+    "moves": [
+      "Razor Leaf",
+      "Headbutt",
+      "Toxic",
+      "Growth"
+    ],
+    "stats": {
+      "HP": 271,
+      "Attack": 174,
+      "Defense": 176,
+      "Sp.Atk": 206,
+      "Sp.Def": 206,
+      "Speed": 168
+    }
+  },
+  {
+    "name": "Ivysaur",
+    "moves": [
+      "Solarbeam",
+      "Fury Cutter",
+      "Leech Seed",
+      "Sunny Day"
+    ],
+    "stats": {
+      "HP": 287,
+      "Attack": 188,
+      "Defense": 188,
+      "Sp.Atk": 222,
+      "Sp.Def": 222,
+      "Speed": 184
+    }
+  },
+  {
+    "name": "Venusaur",
+    "moves": [
+      "Giga Drain",
+      "Tackle",
+      "Poisonpowder",
+      "Growl"
+    ],
+    "stats": {
+      "HP": 313,
+      "Attack": 212,
+      "Defense": 214,
+      "Sp.Atk": 248,
+      "Sp.Def": 248,
+      "Speed": 206
+    }
+  },
+  {
+    "name": "Charmander",
+    "moves": [
+      "Flamethrower",
+      "Slash",
+      "Dragonbreath",
+      "Sunny Day"
+    ],
+    "stats": {
+      "HP": 259,
+      "Attack": 180,
+      "Defense": 164,
+      "Sp.Atk": 196,
+      "Sp.Def": 176,
+      "Speed": 208
+    }
+  },
+  {
+    "name": "Charmeleon",
+    "moves": [
+      "Fire Blast",
+      "Strength",
+      "Dig",
+      "Smokescreen"
+    ],
+    "stats": {
+      "HP": 283,
+      "Attack": 192,
+      "Defense": 178,
+      "Sp.Atk": 222,
+      "Sp.Def": 192,
+      "Speed": 224
+    }
+  },
+  {
+    "name": "Charizard",
+    "moves": [
+      "Fire Punch",
+      "Wing Attack",
+      "Growl",
+      "Scary Face"
+    ],
+    "stats": {
+      "HP": 309,
+      "Attack": 216,
+      "Defense": 204,
+      "Sp.Atk": 266,
+      "Sp.Def": 218,
+      "Speed": 246
+    }
+  },
+  {
+    "name": "Squirtle",
+    "moves": [
+      "Surf",
+      "Bite",
+      "Blizzard",
+      "Rain Dance"
+    ],
+    "stats": {
+      "HP": 269,
+      "Attack": 172,
+      "Defense": 208,
+      "Sp.Atk": 176,
+      "Sp.Def": 204,
+      "Speed": 164
+    }
+  },
+  {
+    "name": "Wartortle",
+    "moves": [
+      "Waterfall",
+      "Icy Wind",
+      "Dig",
+      "Rapid Spin"
+    ],
+    "stats": {
+      "HP": 285,
+      "Attack": 190,
+      "Defense": 222,
+      "Sp.Atk": 192,
+      "Sp.Def": 222,
+      "Speed": 180
+    }
+  },
+  {
+    "name": "Blastoise",
+    "moves": [
+      "Hydro Pump",
+      "Rapid Spin",
+      "Mud-slap",
+      "Withdraw"
+    ],
+    "stats": {
+      "HP": 311,
+      "Attack": 214,
+      "Defense": 248,
+      "Sp.Atk": 218,
+      "Sp.Def": 258,
+      "Speed": 202
+    }
+  },
+  {
+    "name": "Caterpie",
+    "moves": [
+      "Tackle",
+      "String Shot",
+      "",
+      ""
+    ],
+    "stats": {
+      "HP": 284,
+      "Attack": 149,
+      "Defense": 159,
+      "Sp.Atk": 133,
+      "Sp.Def": 133,
+      "Speed": 181
+    }
+  },
+  {
+    "name": "Metapod",
+    "moves": [
+      "Harden",
+      "",
+      "",
+      ""
+    ],
+    "stats": {
+      "HP": 294,
+      "Attack": 129,
+      "Defense": 199,
+      "Sp.Atk": 143,
+      "Sp.Def": 143,
+      "Speed": 151
+    }
+  },
+  {
+    "name": "Butterfree",
+    "moves": [
+      "Gust",
+      "Psychic",
+      "Hyper Beam",
+      "Stun Spore"
+    ],
+    "stats": {
+      "HP": 294,
+      "Attack": 161,
+      "Defense": 169,
+      "Sp.Atk": 229,
+      "Sp.Def": 229,
+      "Speed": 209
+    }
+  },
+  {
+    "name": "Weedle",
+    "moves": [
+      "Poison Sting",
+      "String Shot",
+      "",
+      ""
+    ],
+    "stats": {
+      "HP": 274,
+      "Attack": 159,
+      "Defense": 149,
+      "Sp.Atk": 133,
+      "Sp.Def": 133,
+      "Speed": 191
+    }
+  },
+  {
+    "name": "Kakuna",
+    "moves": [
+      "Harden",
+      "",
+      "",
+      ""
+    ],
+    "stats": {
+      "HP": 284,
+      "Attack": 139,
+      "Defense": 189,
+      "Sp.Atk": 143,
+      "Sp.Def": 143,
+      "Speed": 161
+    }
+  },
+  {
+    "name": "Beedrill",
+    "moves": [
+      "Twineedle",
+      "Sludge Bomb",
+      "Pursuit",
+      "Focus Energy"
+    ],
+    "stats": {
+      "HP": 304,
+      "Attack": 231,
+      "Defense": 149,
+      "Sp.Atk": 159,
+      "Sp.Def": 229,
+      "Speed": 219
+    }
+  },
+  {
+    "name": "Pidgey",
+    "moves": [
+      "Fly",
+      "Return",
+      "Steel Wing",
+      "Sand-attack"
+    ],
+    "stats": {
+      "HP": 268,
+      "Attack": 173,
+      "Defense": 165,
+      "Sp.Atk": 153,
+      "Sp.Def": 153,
+      "Speed": 195
+    }
+  },
+  {
+    "name": "Pidgeotto",
+    "moves": [
+      "Fly",
+      "Frustration",
+      "Steel Wing",
+      "Mirror Move"
+    ],
+    "stats": {
+      "HP": 307,
+      "Attack": 196,
+      "Defense": 188,
+      "Sp.Atk": 176,
+      "Sp.Def": 176,
+      "Speed": 220
+    }
+  },
+  {
+    "name": "Pidgeot",
+    "moves": [
+      "Fly",
+      "Swift",
+      "Steel Wing",
+      "Whirlwind"
+    ],
+    "stats": {
+      "HP": 325,
+      "Attack": 216,
+      "Defense": 206,
+      "Sp.Atk": 194,
+      "Sp.Def": 194,
+      "Speed": 236
+    }
+  },
+  {
+    "name": "Rattata",
+    "moves": [
+      "Super Fang",
+      "Headbutt",
+      "Shadow Ball",
+      "Focus Energy"
+    ],
+    "stats": {
+      "HP": 248,
+      "Attack": 195,
+      "Defense": 155,
+      "Sp.Atk": 133,
+      "Sp.Def": 153,
+      "Speed": 227
+    }
+  },
+  {
+    "name": "Raticate",
+    "moves": [
+      "Super Fang",
+      "Hyper Fang",
+      "Pursuit",
+      "Scary Face"
+    ],
+    "stats": {
+      "HP": 277,
+      "Attack": 226,
+      "Defense": 182,
+      "Sp.Atk": 162,
+      "Sp.Def": 202,
+      "Speed": 258
+    }
+  },
+  {
+    "name": "Spearow",
+    "moves": [
+      "Drill Peck",
+      "Frustration",
+      "Steel Wing",
+      "Mirror Move"
+    ],
+    "stats": {
+      "HP": 268,
+      "Attack": 203,
+      "Defense": 145,
+      "Sp.Atk": 145,
+      "Sp.Def": 145,
+      "Speed": 223
+    }
+  },
+  {
+    "name": "Fearow",
+    "moves": [
+      "Drill Peck",
+      "Hyper Beam",
+      "Pursuit",
+      "Toxic"
+    ],
+    "stats": {
+      "HP": 297,
+      "Attack": 244,
+      "Defense": 192,
+      "Sp.Atk": 184,
+      "Sp.Def": 184,
+      "Speed": 264
+    }
+  },
+  {
+    "name": "Ekans",
+    "moves": [
+      "Sludge Bomb",
+      "Earthquake",
+      "Strength",
+      "Glare"
+    ],
+    "stats": {
+      "HP": 258,
+      "Attack": 203,
+      "Defense": 173,
+      "Sp.Atk": 163,
+      "Sp.Def": 191,
+      "Speed": 193
+    }
+  },
+  {
+    "name": "Arbok",
+    "moves": [
+      "Sludge Bomb",
+      "Bite",
+      "Dig",
+      "Glare"
+    ],
+    "stats": {
+      "HP": 287,
+      "Attack": 234,
+      "Defense": 200,
+      "Sp.Atk": 192,
+      "Sp.Def": 220,
+      "Speed": 224
+    }
+  },
+  {
+    "name": "Pikachu",
+    "moves": [
+      "Thunderbolt",
+      "Headbutt",
+      "Iron Tail",
+      "Thunder Wave"
+    ],
+    "stats": {
+      "HP": 251,
+      "Attack": 186,
+      "Defense": 138,
+      "Sp.Atk": 176,
+      "Sp.Def": 156,
+      "Speed": 258
+    }
+  },
+  {
+    "name": "Pikachu",
+    "moves": [
+      "Thunderbolt",
+      "Surf",
+      "Iron Tail",
+      "Thunder Wave"
+    ],
+    "stats": {
+      "HP": 251,
+      "Attack": 186,
+      "Defense": 138,
+      "Sp.Atk": 176,
+      "Sp.Def": 156,
+      "Speed": 258
+    }
+  },
+  {
+    "name": "Raichu",
+    "moves": [
+      "Thunder",
+      "Quick Attack",
+      "Thunder Wave",
+      "Tail Whip"
+    ],
+    "stats": {
+      "HP": 279,
+      "Attack": 236,
+      "Defense": 166,
+      "Sp.Atk": 234,
+      "Sp.Def": 214,
+      "Speed": 254
+    }
+  },
+  {
+    "name": "Sandshrew",
+    "moves": [
+      "Earthquake",
+      "Slash",
+      "Fury Cutter",
+      "Sandstorm"
+    ],
+    "stats": {
+      "HP": 281,
+      "Attack": 226,
+      "Defense": 248,
+      "Sp.Atk": 116,
+      "Sp.Def": 136,
+      "Speed": 158
+    }
+  },
+  {
+    "name": "Sandslash",
+    "moves": [
+      "Earthquake",
+      "Fury Swipes",
+      "Sand-attack",
+      "Sandstorm"
+    ],
+    "stats": {
+      "HP": 309,
+      "Attack": 256,
+      "Defense": 276,
+      "Sp.Atk": 144,
+      "Sp.Def": 164,
+      "Speed": 184
+    }
+  },
+  {
+    "name": "Nidoran\u2640",
+    "moves": [
+      "Headbutt",
+      "Iron Tail",
+      "Blizzard",
+      "Toxic"
+    ],
+    "stats": {
+      "HP": 298,
+      "Attack": 177,
+      "Defense": 189,
+      "Sp.Atk": 163,
+      "Sp.Def": 163,
+      "Speed": 165
+    }
+  },
+  {
+    "name": "Nidorina",
+    "moves": [
+      "Strength",
+      "Bite",
+      "Blizzard",
+      "Toxic"
+    ],
+    "stats": {
+      "HP": 314,
+      "Attack": 195,
+      "Defense": 203,
+      "Sp.Atk": 179,
+      "Sp.Def": 179,
+      "Speed": 181
+    }
+  },
+  {
+    "name": "Nidoqueen",
+    "moves": [
+      "Body Slam",
+      "Mud-slap",
+      "Ice Punch",
+      "Toxic"
+    ],
+    "stats": {
+      "HP": 339,
+      "Attack": 220,
+      "Defense": 230,
+      "Sp.Atk": 204,
+      "Sp.Def": 224,
+      "Speed": 206
+    }
+  },
+  {
+    "name": "Nidoran\u2642",
+    "moves": [
+      "Headbutt",
+      "Iron Tail",
+      "Thunder",
+      "Horn Drill"
+    ],
+    "stats": {
+      "HP": 280,
+      "Attack": 197,
+      "Defense": 165,
+      "Sp.Atk": 163,
+      "Sp.Def": 163,
+      "Speed": 183
+    }
+  },
+  {
+    "name": "Nidorino",
+    "moves": [
+      "Strength",
+      "Double Kick",
+      "Thunder",
+      "Horn Drill"
+    ],
+    "stats": {
+      "HP": 296,
+      "Attack": 215,
+      "Defense": 183,
+      "Sp.Atk": 179,
+      "Sp.Def": 179,
+      "Speed": 199
+    }
+  },
+  {
+    "name": "Nidoking",
+    "moves": [
+      "Horn Attack",
+      "Mud-slap",
+      "Thunder",
+      "Horn Drill"
+    ],
+    "stats": {
+      "HP": 321,
+      "Attack": 240,
+      "Defense": 210,
+      "Sp.Atk": 224,
+      "Sp.Def": 204,
+      "Speed": 224
+    }
+  },
+  {
+    "name": "Clefairy",
+    "moves": [
+      "Metronome",
+      "Strength",
+      "Psychic",
+      "Moonlight"
+    ],
+    "stats": {
+      "HP": 321,
+      "Attack": 166,
+      "Defense": 174,
+      "Sp.Atk": 196,
+      "Sp.Def": 206,
+      "Speed": 148
+    }
+  },
+  {
+    "name": "Clefable",
+    "moves": [
+      "Metronome",
+      "Headbutt",
+      "Ice Punch",
+      "Encore"
+    ],
+    "stats": {
+      "HP": 349,
+      "Attack": 196,
+      "Defense": 202,
+      "Sp.Atk": 224,
+      "Sp.Def": 234,
+      "Speed": 174
+    }
+  },
+  {
+    "name": "Vulpix",
+    "moves": [
+      "Flamethrower",
+      "Dig",
+      "Confuse Ray",
+      "Sunny Day"
+    ],
+    "stats": {
+      "HP": 264,
+      "Attack": 165,
+      "Defense": 165,
+      "Sp.Atk": 183,
+      "Sp.Def": 213,
+      "Speed": 213
+    }
+  },
+  {
+    "name": "Ninetales",
+    "moves": [
+      "Fire Blast",
+      "Quick Attack",
+      "Roar",
+      "Safeguard"
+    ],
+    "stats": {
+      "HP": 299,
+      "Attack": 200,
+      "Defense": 198,
+      "Sp.Atk": 210,
+      "Sp.Def": 248,
+      "Speed": 246
+    }
+  },
+  {
+    "name": "Jigglypuff",
+    "moves": [
+      "Body Slam",
+      "Rollout",
+      "Defense Curl",
+      "Sing"
+    ],
+    "stats": {
+      "HP": 418,
+      "Attack": 173,
+      "Defense": 125,
+      "Sp.Atk": 173,
+      "Sp.Def": 133,
+      "Speed": 123
+    }
+  },
+  {
+    "name": "Wigglytuff",
+    "moves": [
+      "Double-edge",
+      "Fire Punch",
+      "Leer",
+      "Sing"
+    ],
+    "stats": {
+      "HP": 447,
+      "Attack": 204,
+      "Defense": 152,
+      "Sp.Atk": 212,
+      "Sp.Def": 162,
+      "Speed": 154
+    }
+  },
+  {
+    "name": "Zubat",
+    "moves": [
+      "Wing Attack",
+      "Giga Drain",
+      "Confuse Ray",
+      "Toxic"
+    ],
+    "stats": {
+      "HP": 274,
+      "Attack": 179,
+      "Defense": 159,
+      "Sp.Atk": 153,
+      "Sp.Def": 173,
+      "Speed": 201
+    }
+  },
+  {
+    "name": "Golbat",
+    "moves": [
+      "Wing Attack",
+      "Bite",
+      "Steel Wing",
+      "Haze"
+    ],
+    "stats": {
+      "HP": 309,
+      "Attack": 216,
+      "Defense": 196,
+      "Sp.Atk": 184,
+      "Sp.Def": 204,
+      "Speed": 234
+    }
+  },
+  {
+    "name": "Oddish",
+    "moves": [
+      "Giga Drain",
+      "Sludge Bomb",
+      "Moonlight",
+      "Stun Spore"
+    ],
+    "stats": {
+      "HP": 271,
+      "Attack": 176,
+      "Defense": 188,
+      "Sp.Atk": 226,
+      "Sp.Def": 206,
+      "Speed": 138
+    }
+  },
+  {
+    "name": "Gloom",
+    "moves": [
+      "Solarbeam",
+      "Sludge Bomb",
+      "Sleep Powder",
+      "Sunny Day"
+    ],
+    "stats": {
+      "HP": 294,
+      "Attack": 201,
+      "Defense": 209,
+      "Sp.Atk": 239,
+      "Sp.Def": 219,
+      "Speed": 149
+    }
+  },
+  {
+    "name": "Vileplume",
+    "moves": [
+      "Petal Dance",
+      "Acid",
+      "Sweet Scent",
+      "Poisonpowder"
+    ],
+    "stats": {
+      "HP": 309,
+      "Attack": 216,
+      "Defense": 226,
+      "Sp.Atk": 254,
+      "Sp.Def": 234,
+      "Speed": 154
+    }
+  },
+  {
+    "name": "Paras",
+    "moves": [
+      "Giga Drain",
+      "Slash",
+      "Spore",
+      "Growth"
+    ],
+    "stats": {
+      "HP": 258,
+      "Attack": 223,
+      "Defense": 195,
+      "Sp.Atk": 173,
+      "Sp.Def": 193,
+      "Speed": 133
+    }
+  },
+  {
+    "name": "Parasect",
+    "moves": [
+      "Giga Drain",
+      "Slash",
+      "Fury Cutter",
+      "Spore"
+    ],
+    "stats": {
+      "HP": 287,
+      "Attack": 254,
+      "Defense": 222,
+      "Sp.Atk": 182,
+      "Sp.Def": 222,
+      "Speed": 124
+    }
+  },
+  {
+    "name": "Venonat",
+    "moves": [
+      "Sludge Bomb",
+      "Psychic",
+      "Supersonic",
+      "Stun Spore"
+    ],
+    "stats": {
+      "HP": 301,
+      "Attack": 186,
+      "Defense": 178,
+      "Sp.Atk": 156,
+      "Sp.Def": 186,
+      "Speed": 168
+    }
+  },
+  {
+    "name": "Venomoth",
+    "moves": [
+      "Sludge Bomb",
+      "Psychic",
+      "Leech Life",
+      "Foresight"
+    ],
+    "stats": {
+      "HP": 303,
+      "Attack": 190,
+      "Defense": 180,
+      "Sp.Atk": 238,
+      "Sp.Def": 208,
+      "Speed": 238
+    }
+  },
+  {
+    "name": "Diglett",
+    "moves": [
+      "Earthquake",
+      "Slash",
+      "Fissure",
+      "Sand-attack"
+    ],
+    "stats": {
+      "HP": 208,
+      "Attack": 193,
+      "Defense": 135,
+      "Sp.Atk": 153,
+      "Sp.Def": 173,
+      "Speed": 273
+    }
+  },
+  {
+    "name": "Dugtrio",
+    "moves": [
+      "Magnitude",
+      "Slash",
+      "Attract",
+      "Curse"
+    ],
+    "stats": {
+      "HP": 237,
+      "Attack": 224,
+      "Defense": 162,
+      "Sp.Atk": 162,
+      "Sp.Def": 202,
+      "Speed": 304
+    }
+  },
+  {
+    "name": "Meowth",
+    "moves": [
+      "Slash",
+      "Faint Attack",
+      "Shadow Ball",
+      "Screech"
+    ],
+    "stats": {
+      "HP": 268,
+      "Attack": 173,
+      "Defense": 155,
+      "Sp.Atk": 163,
+      "Sp.Def": 163,
+      "Speed": 263
+    }
+  },
+  {
+    "name": "Persian",
+    "moves": [
+      "Headbutt",
+      "Bite",
+      "Roar",
+      "Growl"
+    ],
+    "stats": {
+      "HP": 297,
+      "Attack": 204,
+      "Defense": 182,
+      "Sp.Atk": 192,
+      "Sp.Def": 192,
+      "Speed": 294
+    }
+  },
+  {
+    "name": "Psyduck",
+    "moves": [
+      "Surf",
+      "Dig",
+      "Swagger",
+      "Psych Up"
+    ],
+    "stats": {
+      "HP": 281,
+      "Attack": 180,
+      "Defense": 174,
+      "Sp.Atk": 206,
+      "Sp.Def": 176,
+      "Speed": 188
+    }
+  },
+  {
+    "name": "Golduck",
+    "moves": [
+      "Hydro Pump",
+      "Fury Swipes",
+      "Confusion",
+      "Psych Up"
+    ],
+    "stats": {
+      "HP": 313,
+      "Attack": 212,
+      "Defense": 204,
+      "Sp.Atk": 238,
+      "Sp.Def": 208,
+      "Speed": 216
+    }
+  },
+  {
+    "name": "Mankey",
+    "moves": [
+      "Cross Chop",
+      "Strength",
+      "Double Team",
+      "Screech"
+    ],
+    "stats": {
+      "HP": 261,
+      "Attack": 236,
+      "Defense": 148,
+      "Sp.Atk": 146,
+      "Sp.Def": 166,
+      "Speed": 218
+    }
+  },
+  {
+    "name": "Primeape",
+    "moves": [
+      "Cross Chop",
+      "Thrash",
+      "Curse",
+      "Focus Energy"
+    ],
+    "stats": {
+      "HP": 289,
+      "Attack": 266,
+      "Defense": 176,
+      "Sp.Atk": 174,
+      "Sp.Def": 194,
+      "Speed": 244
+    }
+  },
+  {
+    "name": "Growlithe",
+    "moves": [
+      "Flamethrower",
+      "Dig",
+      "Sunny Day",
+      "Roar"
+    ],
+    "stats": {
+      "HP": 284,
+      "Attack": 211,
+      "Defense": 159,
+      "Sp.Atk": 209,
+      "Sp.Def": 169,
+      "Speed": 189
+    }
+  },
+  {
+    "name": "Arcanine",
+    "moves": [
+      "Flame Wheel",
+      "Extremespeed",
+      "Leer",
+      "Roar"
+    ],
+    "stats": {
+      "HP": 325,
+      "Attack": 260,
+      "Defense": 200,
+      "Sp.Atk": 240,
+      "Sp.Def": 200,
+      "Speed": 230
+    }
+  },
+  {
+    "name": "Poliwag",
+    "moves": [
+      "Hydro Pump",
+      "Body Slam",
+      "Hypnosis",
+      "Rain Dance"
+    ],
+    "stats": {
+      "HP": 261,
+      "Attack": 176,
+      "Defense": 158,
+      "Sp.Atk": 156,
+      "Sp.Def": 156,
+      "Speed": 258
+    }
+  },
+  {
+    "name": "Poliwhirl",
+    "moves": [
+      "Surf",
+      "Snore",
+      "Belly Drum",
+      "Rest"
+    ],
+    "stats": {
+      "HP": 304,
+      "Attack": 201,
+      "Defense": 199,
+      "Sp.Atk": 169,
+      "Sp.Def": 169,
+      "Speed": 249
+    }
+  },
+  {
+    "name": "Poliwrath",
+    "moves": [
+      "Dynamicpunch",
+      "Hydro Pump",
+      "Doubleslap",
+      "Mind Reader"
+    ],
+    "stats": {
+      "HP": 333,
+      "Attack": 218,
+      "Defense": 238,
+      "Sp.Atk": 188,
+      "Sp.Def": 228,
+      "Speed": 186
+    }
+  },
+  {
+    "name": "Abra",
+    "moves": [
+      "Psychic",
+      "Ice Punch",
+      "Swagger",
+      "Attract"
+    ],
+    "stats": {
+      "HP": 231,
+      "Attack": 116,
+      "Defense": 108,
+      "Sp.Atk": 286,
+      "Sp.Def": 186,
+      "Speed": 258
+    }
+  },
+  {
+    "name": "Kadabra",
+    "moves": [
+      "Psychic",
+      "Thunderpunch",
+      "Reflect",
+      "Kinesis"
+    ],
+    "stats": {
+      "HP": 247,
+      "Attack": 134,
+      "Defense": 122,
+      "Sp.Atk": 302,
+      "Sp.Def": 202,
+      "Speed": 274
+    }
+  },
+  {
+    "name": "Alakazam",
+    "moves": [
+      "Psybeam",
+      "Future Sight",
+      "Thief",
+      "Kinesis"
+    ],
+    "stats": {
+      "HP": 269,
+      "Attack": 156,
+      "Defense": 146,
+      "Sp.Atk": 324,
+      "Sp.Def": 224,
+      "Speed": 294
+    }
+  },
+  {
+    "name": "Machop",
+    "moves": [
+      "Submission",
+      "Seismic Toss",
+      "Earthquake",
+      "Double Team"
+    ],
+    "stats": {
+      "HP": 321,
+      "Attack": 236,
+      "Defense": 178,
+      "Sp.Atk": 146,
+      "Sp.Def": 146,
+      "Speed": 148
+    }
+  },
+  {
+    "name": "Machoke",
+    "moves": [
+      "Karate Chop",
+      "Strength",
+      "Dig",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 327,
+      "Attack": 264,
+      "Defense": 202,
+      "Sp.Atk": 162,
+      "Sp.Def": 182,
+      "Speed": 154
+    }
+  },
+  {
+    "name": "Machamp",
+    "moves": [
+      "Submission",
+      "Ice Punch",
+      "Thunderpunch",
+      "Fire Punch"
+    ],
+    "stats": {
+      "HP": 337,
+      "Attack": 312,
+      "Defense": 212,
+      "Sp.Atk": 182,
+      "Sp.Def": 222,
+      "Speed": 160
+    }
+  },
+  {
+    "name": "Bellsprout",
+    "moves": [
+      "Mega Drain",
+      "Sludge",
+      "Toxic",
+      "Growth"
+    ],
+    "stats": {
+      "HP": 281,
+      "Attack": 226,
+      "Defense": 148,
+      "Sp.Atk": 216,
+      "Sp.Def": 136,
+      "Speed": 158
+    }
+  },
+  {
+    "name": "Weepinbell",
+    "moves": [
+      "Razor Leaf",
+      "Sludge",
+      "Stun Spore",
+      "Growth"
+    ],
+    "stats": {
+      "HP": 304,
+      "Attack": 251,
+      "Defense": 169,
+      "Sp.Atk": 239,
+      "Sp.Def": 159,
+      "Speed": 179
+    }
+  },
+  {
+    "name": "Victreebel",
+    "moves": [
+      "Solarbeam",
+      "Acid",
+      "Sleep Powder",
+      "Growth"
+    ],
+    "stats": {
+      "HP": 319,
+      "Attack": 266,
+      "Defense": 186,
+      "Sp.Atk": 254,
+      "Sp.Def": 174,
+      "Speed": 194
+    }
+  },
+  {
+    "name": "Tentacool",
+    "moves": [
+      "Surf",
+      "Sludge",
+      "Blizzard",
+      "Screech"
+    ],
+    "stats": {
+      "HP": 261,
+      "Attack": 156,
+      "Defense": 148,
+      "Sp.Atk": 176,
+      "Sp.Def": 276,
+      "Speed": 218
+    }
+  },
+  {
+    "name": "Tentacruel",
+    "moves": [
+      "Bubblebeam",
+      "Sludge",
+      "Wrap",
+      "Barrier"
+    ],
+    "stats": {
+      "HP": 313,
+      "Attack": 188,
+      "Defense": 178,
+      "Sp.Atk": 208,
+      "Sp.Def": 288,
+      "Speed": 246
+    }
+  },
+  {
+    "name": "Geodude",
+    "moves": [
+      "Earthquake",
+      "Body Slam",
+      "Exploison",
+      "Defense Curl"
+    ],
+    "stats": {
+      "HP": 261,
+      "Attack": 236,
+      "Defense": 278,
+      "Sp.Atk": 136,
+      "Sp.Def": 136,
+      "Speed": 118
+    }
+  },
+  {
+    "name": "Graveler",
+    "moves": [
+      "Earthquake",
+      "Rock Throw",
+      "Selfdestruct",
+      "Body Slam"
+    ],
+    "stats": {
+      "HP": 284,
+      "Attack": 261,
+      "Defense": 299,
+      "Sp.Atk": 159,
+      "Sp.Def": 159,
+      "Speed": 139
+    }
+  },
+  {
+    "name": "Golem",
+    "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Rest",
+      "Harden"
+    ],
+    "stats": {
+      "HP": 319,
+      "Attack": 276,
+      "Defense": 316,
+      "Sp.Atk": 164,
+      "Sp.Def": 184,
+      "Speed": 144
+    }
+  },
+  {
+    "name": "Ponyta",
+    "moves": [
+      "Fire Blast",
+      "Tackle",
+      "Dig",
+      "Smog"
+    ],
+    "stats": {
+      "HP": 267,
+      "Attack": 234,
+      "Defense": 172,
+      "Sp.Atk": 192,
+      "Sp.Def": 192,
+      "Speed": 244
+    }
+  },
+  {
+    "name": "Rapidash",
+    "moves": [
+      "Fire Spin",
+      "Stomp",
+      "Dig",
+      "Toxic"
+    ],
+    "stats": {
+      "HP": 285,
+      "Attack": 252,
+      "Defense": 192,
+      "Sp.Atk": 210,
+      "Sp.Def": 210,
+      "Speed": 260
+    }
+  },
+  {
+    "name": "Slowpoke",
+    "moves": [
+      "Surf",
+      "Psychic",
+      "Earthquake",
+      "Growth"
+    ],
+    "stats": {
+      "HP": 361,
+      "Attack": 206,
+      "Defense": 208,
+      "Sp.Atk": 156,
+      "Sp.Def": 156,
+      "Speed": 108
+    }
+  },
+  {
+    "name": "Slowbro",
+    "moves": [
+      "Surf",
+      "Confusion",
+      "Leer",
+      "Growl"
+    ],
+    "stats": {
+      "HP": 353,
+      "Attack": 210,
+      "Defense": 278,
+      "Sp.Atk": 258,
+      "Sp.Def": 218,
+      "Speed": 120
+    }
+  },
+  {
+    "name": "Magnemite",
+    "moves": [
+      "Thunder",
+      "Body Slam",
+      "Supersonic",
+      "Thunder Wave"
+    ],
+    "stats": {
+      "HP": 231,
+      "Attack": 146,
+      "Defense": 218,
+      "Sp.Atk": 266,
+      "Sp.Def": 186,
+      "Speed": 168
+    }
+  },
+  {
+    "name": "Magneton",
+    "moves": [
+      "Thunder",
+      "Swift",
+      "Flash",
+      "Thunder Wave"
+    ],
+    "stats": {
+      "HP": 259,
+      "Attack": 176,
+      "Defense": 246,
+      "Sp.Atk": 294,
+      "Sp.Def": 194,
+      "Speed": 194
+    }
+  },
+  {
+    "name": "Farfetch'd",
+    "moves": [
+      "Slash",
+      "Fly",
+      "Rest",
+      "Swords Dance"
+    ],
+    "stats": {
+      "HP": 278,
+      "Attack": 201,
+      "Defense": 179,
+      "Sp.Atk": 185,
+      "Sp.Def": 193,
+      "Speed": 189
+    }
+  },
+  {
+    "name": "Doduo",
+    "moves": [
+      "Drill Peck",
+      "Tri Attack",
+      "Wing Attack",
+      "Double Team"
+    ],
+    "stats": {
+      "HP": 251,
+      "Attack": 246,
+      "Defense": 168,
+      "Sp.Atk": 146,
+      "Sp.Def": 146,
+      "Speed": 228
+    }
+  },
+  {
+    "name": "Dodrio",
+    "moves": [
+      "Fly",
+      "Tri Attack",
+      "Wing Attack",
+      "Growl"
+    ],
+    "stats": {
+      "HP": 279,
+      "Attack": 276,
+      "Defense": 196,
+      "Sp.Atk": 174,
+      "Sp.Def": 174,
+      "Speed": 254
+    }
+  },
+  {
+    "name": "Seel",
+    "moves": [
+      "Surf",
+      "Ice Beam",
+      "Body Slam",
+      "Rest"
+    ],
+    "stats": {
+      "HP": 311,
+      "Attack": 166,
+      "Defense": 188,
+      "Sp.Atk": 166,
+      "Sp.Def": 216,
+      "Speed": 168
+    }
+  },
+  {
+    "name": "Dewgong",
+    "moves": [
+      "Waterfall",
+      "Aurora Beam",
+      "Horn Drill",
+      "Rest"
+    ],
+    "stats": {
+      "HP": 339,
+      "Attack": 196,
+      "Defense": 216,
+      "Sp.Atk": 194,
+      "Sp.Def": 244,
+      "Speed": 194
+    }
+  },
+  {
+    "name": "Grimer",
+    "moves": [
+      "Sludge",
+      "Body Slam",
+      "Toxic",
+      "Screech"
+    ],
+    "stats": {
+      "HP": 341,
+      "Attack": 236,
+      "Defense": 178,
+      "Sp.Atk": 156,
+      "Sp.Def": 176,
+      "Speed": 128
+    }
+  },
+  {
+    "name": "Muk",
+    "moves": [
+      "Sludge",
+      "Dynamicpunch",
+      "Leer",
+      "Acid Armor"
+    ],
+    "stats": {
+      "HP": 365,
+      "Attack": 262,
+      "Defense": 202,
+      "Sp.Atk": 180,
+      "Sp.Def": 250,
+      "Speed": 150
+    }
+  },
+  {
+    "name": "Shellder",
+    "moves": [
+      "Surf",
+      "Ice Beam",
+      "Swift",
+      "Supersonic"
+    ],
+    "stats": {
+      "HP": 241,
+      "Attack": 206,
+      "Defense": 278,
+      "Sp.Atk": 166,
+      "Sp.Def": 126,
+      "Speed": 158
+    }
+  },
+  {
+    "name": "Cloyster",
+    "moves": [
+      "Clamp",
+      "Aurora Beam",
+      "Spike Cannon",
+      "Withdraw"
+    ],
+    "stats": {
+      "HP": 253,
+      "Attack": 238,
+      "Defense": 408,
+      "Sp.Atk": 218,
+      "Sp.Def": 138,
+      "Speed": 186
+    }
+  },
+  {
+    "name": "Gastly",
+    "moves": [
+      "Lick",
+      "Psychic",
+      "Thunderbolt",
+      "Confuse Ray"
+    ],
+    "stats": {
+      "HP": 241,
+      "Attack": 146,
+      "Defense": 138,
+      "Sp.Atk": 276,
+      "Sp.Def": 146,
+      "Speed": 238
+    }
+  },
+  {
+    "name": "Haunter",
+    "moves": [
+      "Lick",
+      "Mega Drain",
+      "Confuse Ray",
+      "Confusion"
+    ],
+    "stats": {
+      "HP": 257,
+      "Attack": 164,
+      "Defense": 152,
+      "Sp.Atk": 292,
+      "Sp.Def": 172,
+      "Speed": 254
+    }
+  },
+  {
+    "name": "Gengar",
+    "moves": [
+      "Night Shade",
+      "Psychic",
+      "Thunderbolt",
+      "Hypnosis"
+    ],
+    "stats": {
+      "HP": 275,
+      "Attack": 182,
+      "Defense": 172,
+      "Sp.Atk": 310,
+      "Sp.Def": 200,
+      "Speed": 270
+    }
+  },
+  {
+    "name": "Onix",
+    "moves": [
+      "Earthquake",
+      "Rock Throw",
+      "Strength",
+      "Bind"
+    ],
+    "stats": {
+      "HP": 244,
+      "Attack": 161,
+      "Defense": 389,
+      "Sp.Atk": 129,
+      "Sp.Def": 159,
+      "Speed": 209
+    }
+  },
+  {
+    "name": "Drowzee",
+    "moves": [
+      "Psychic",
+      "Body Slam",
+      "Dream Eater",
+      "Hypnosis"
+    ],
+    "stats": {
+      "HP": 301,
+      "Attack": 172,
+      "Defense": 168,
+      "Sp.Atk": 162,
+      "Sp.Def": 256,
+      "Speed": 162
+    }
+  },
+  {
+    "name": "Hypno",
+    "moves": [
+      "Confusion",
+      "Dream Eater",
+      "Growth",
+      "Hypnosis"
+    ],
+    "stats": {
+      "HP": 329,
+      "Attack": 202,
+      "Defense": 196,
+      "Sp.Atk": 200,
+      "Sp.Def": 284,
+      "Speed": 188
+    }
+  },
+  {
+    "name": "Krabby",
+    "moves": [
+      "Crabhammer",
+      "Strength",
+      "Blizzard",
+      "Guillotine"
+    ],
+    "stats": {
+      "HP": 241,
+      "Attack": 286,
+      "Defense": 258,
+      "Sp.Atk": 126,
+      "Sp.Def": 126,
+      "Speed": 178
+    }
+  },
+  {
+    "name": "Kingler",
+    "moves": [
+      "Crabhammer",
+      "Vicegrip",
+      "Guillotine",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 269,
+      "Attack": 316,
+      "Defense": 286,
+      "Sp.Atk": 154,
+      "Sp.Def": 154,
+      "Speed": 204
+    }
+  },
+  {
+    "name": "Voltorb",
+    "moves": [
+      "Thunder",
+      "Selfdestruct",
+      "Counter",
+      "Body Slam"
+    ],
+    "stats": {
+      "HP": 261,
+      "Attack": 136,
+      "Defense": 178,
+      "Sp.Atk": 186,
+      "Sp.Def": 186,
+      "Speed": 278
+    }
+  },
+  {
+    "name": "Electrode",
+    "moves": [
+      "Thunder",
+      "Swift",
+      "Sonicboom",
+      "Flash"
+    ],
+    "stats": {
+      "HP": 279,
+      "Attack": 156,
+      "Defense": 196,
+      "Sp.Atk": 214,
+      "Sp.Def": 214,
+      "Speed": 334
+    }
+  },
+  {
+    "name": "Exeggcute",
+    "moves": [
+      "Psychic",
+      "Mega Drain",
+      "Stun Spore",
+      "Leech Seed"
+    ],
+    "stats": {
+      "HP": 301,
+      "Attack": 156,
+      "Defense": 238,
+      "Sp.Atk": 196,
+      "Sp.Def": 166,
+      "Speed": 158
+    }
+  },
+  {
+    "name": "Exeggutor",
+    "moves": [
+      "Egg Bomb",
+      "Confusion",
+      "Dream Eater",
+      "Sleep Powder"
+    ],
+    "stats": {
+      "HP": 343,
+      "Attack": 238,
+      "Defense": 218,
+      "Sp.Atk": 298,
+      "Sp.Def": 178,
+      "Speed": 156
+    }
+  },
+  {
+    "name": "Cubone",
+    "moves": [
+      "Bonemerang",
+      "Headbutt",
+      "Blizzard",
+      "Focus Energy"
+    ],
+    "stats": {
+      "HP": 281,
+      "Attack": 176,
+      "Defense": 268,
+      "Sp.Atk": 156,
+      "Sp.Def": 176,
+      "Speed": 148
+    }
+  },
+  {
+    "name": "Marowak",
+    "moves": [
+      "Bonemerang",
+      "Thrash",
+      "Thunderpunch",
+      "Focus Energy"
+    ],
+    "stats": {
+      "HP": 287,
+      "Attack": 224,
+      "Defense": 282,
+      "Sp.Atk": 162,
+      "Sp.Def": 222,
+      "Speed": 154
+    }
+  },
+  {
+    "name": "Hitmonlee",
+    "moves": [
+      "Hi Jump Kick",
+      "Mega Kick",
+      "Rolling Kick",
+      "Meditate"
+    ],
+    "stats": {
+      "HP": 263,
+      "Attack": 300,
+      "Defense": 164,
+      "Sp.Atk": 128,
+      "Sp.Def": 278,
+      "Speed": 234
+    }
+  },
+  {
+    "name": "Hitmonchan",
+    "moves": [
+      "Submission",
+      "Strength",
+      "Ice Punch",
+      "Counter"
+    ],
+    "stats": {
+      "HP": 263,
+      "Attack": 270,
+      "Defense": 216,
+      "Sp.Atk": 128,
+      "Sp.Def": 278,
+      "Speed": 212
+    }
+  },
+  {
+    "name": "Lickitung",
+    "moves": [
+      "Hyper Beam",
+      "Swords Dance",
+      "Surf",
+      "Supersonic"
+    ],
+    "stats": {
+      "HP": 354,
+      "Attack": 181,
+      "Defense": 219,
+      "Sp.Atk": 189,
+      "Sp.Def": 219,
+      "Speed": 129
+    }
+  },
+  {
+    "name": "Koffing",
+    "moves": [
+      "Sludge",
+      "Fire Blast",
+      "Exploison",
+      "Toxic"
+    ],
+    "stats": {
+      "HP": 261,
+      "Attack": 206,
+      "Defense": 268,
+      "Sp.Atk": 196,
+      "Sp.Def": 166,
+      "Speed": 148
+    }
+  },
+  {
+    "name": "Weezing",
+    "moves": [
+      "Sludge",
+      "Thunderbolt",
+      "Selfdestruct",
+      "Haze"
+    ],
+    "stats": {
+      "HP": 289,
+      "Attack": 236,
+      "Defense": 296,
+      "Sp.Atk": 224,
+      "Sp.Def": 194,
+      "Speed": 174
+    }
+  },
+  {
+    "name": "Rhyhorn",
+    "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Body Slam",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 341,
+      "Attack": 246,
+      "Defense": 268,
+      "Sp.Atk": 136,
+      "Sp.Def": 136,
+      "Speed": 128
+    }
+  },
+  {
+    "name": "Rhydon",
+    "moves": [
+      "Earthquake",
+      "Stomp",
+      "Body Slam",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 369,
+      "Attack": 316,
+      "Defense": 296,
+      "Sp.Atk": 144,
+      "Sp.Def": 144,
+      "Speed": 134
+    }
+  },
+  {
+    "name": "Chansey",
+    "moves": [
+      "Egg Bomb",
+      "Blizzard",
+      "Dream Eater",
+      "Sing"
+    ],
+    "stats": {
+      "HP": 659,
+      "Attack": 66,
+      "Defense": 66,
+      "Sp.Atk": 124,
+      "Sp.Def": 264,
+      "Speed": 154
+    }
+  },
+  {
+    "name": "Tangela",
+    "moves": [
+      "Giga Drain",
+      "Rest",
+      "Sleep Powder",
+      "Growth"
+    ],
+    "stats": {
+      "HP": 297,
+      "Attack": 174,
+      "Defense": 292,
+      "Sp.Atk": 262,
+      "Sp.Def": 142,
+      "Speed": 184
+    }
+  },
+  {
+    "name": "Kangaskhan",
+    "moves": [
+      "Dizzy Punch",
+      "Bite",
+      "Surf",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 369,
+      "Attack": 246,
+      "Defense": 216,
+      "Sp.Atk": 134,
+      "Sp.Def": 214,
+      "Speed": 234
+    }
+  },
+  {
+    "name": "Horsea",
+    "moves": [
+      "Hydro Pump",
+      "Blizzard",
+      "Rest",
+      "Smokescreen"
+    ],
+    "stats": {
+      "HP": 248,
+      "Attack": 163,
+      "Defense": 225,
+      "Sp.Atk": 223,
+      "Sp.Def": 133,
+      "Speed": 203
+    }
+  },
+  {
+    "name": "Seadra",
+    "moves": [
+      "Surf",
+      "Take Down",
+      "Swift",
+      "Smokescreen"
+    ],
+    "stats": {
+      "HP": 277,
+      "Attack": 194,
+      "Defense": 252,
+      "Sp.Atk": 252,
+      "Sp.Def": 152,
+      "Speed": 234
+    }
+  },
+  {
+    "name": "Goldeen",
+    "moves": [
+      "Surf",
+      "Horn Attack",
+      "Horn Drill",
+      "Supersonic"
+    ],
+    "stats": {
+      "HP": 271,
+      "Attack": 210,
+      "Defense": 198,
+      "Sp.Atk": 146,
+      "Sp.Def": 176,
+      "Speed": 204
+    }
+  },
+  {
+    "name": "Seaking",
+    "moves": [
+      "Waterfall",
+      "Take Down",
+      "Horn Drill",
+      "Supersonic"
+    ],
+    "stats": {
+      "HP": 323,
+      "Attack": 244,
+      "Defense": 188,
+      "Sp.Atk": 188,
+      "Sp.Def": 218,
+      "Speed": 196
+    }
+  },
+  {
+    "name": "Staryu",
+    "moves": [
+      "Psychic",
+      "Hydro Pump",
+      "Thunder",
+      "Recover"
+    ],
+    "stats": {
+      "HP": 241,
+      "Attack": 166,
+      "Defense": 188,
+      "Sp.Atk": 216,
+      "Sp.Def": 186,
+      "Speed": 248
+    }
+  },
+  {
+    "name": "Starmie",
+    "moves": [
+      "Surf",
+      "Psychic",
+      "Tackle",
+      "Harden"
+    ],
+    "stats": {
+      "HP": 273,
+      "Attack": 198,
+      "Defense": 218,
+      "Sp.Atk": 248,
+      "Sp.Def": 218,
+      "Speed": 276
+    }
+  },
+  {
+    "name": "Mr. Mime",
+    "moves": [
+      "Psybeam",
+      "Barrier",
+      "Growth",
+      "Substitute"
+    ],
+    "stats": {
+      "HP": 239,
+      "Attack": 146,
+      "Defense": 186,
+      "Sp.Atk": 254,
+      "Sp.Def": 294,
+      "Speed": 234
+    }
+  },
+  {
+    "name": "Scyther",
+    "moves": [
+      "Wing Attack",
+      "Swords Dance",
+      "Swift",
+      "Focus Energy"
+    ],
+    "stats": {
+      "HP": 295,
+      "Attack": 272,
+      "Defense": 212,
+      "Sp.Atk": 160,
+      "Sp.Def": 210,
+      "Speed": 260
+    }
+  },
+  {
+    "name": "Jynx",
+    "moves": [
+      "Ice Punch",
+      "Confusion",
+      "Lick",
+      "Tackle"
+    ],
+    "stats": {
+      "HP": 289,
+      "Attack": 156,
+      "Defense": 126,
+      "Sp.Atk": 284,
+      "Sp.Def": 244,
+      "Speed": 244
+    }
+  },
+  {
+    "name": "Electabuzz",
+    "moves": [
+      "Thunderpunch",
+      "Swift",
+      "Light Screen",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 289,
+      "Attack": 222,
+      "Defense": 170,
+      "Sp.Atk": 244,
+      "Sp.Def": 224,
+      "Speed": 264
+    }
+  },
+  {
+    "name": "Magmar",
+    "moves": [
+      "Fire Punch",
+      "Smog",
+      "Smokescreen",
+      "Confuse Ray"
+    ],
+    "stats": {
+      "HP": 289,
+      "Attack": 246,
+      "Defense": 170,
+      "Sp.Atk": 254,
+      "Sp.Def": 224,
+      "Speed": 240
+    }
+  },
+  {
+    "name": "Pinsir",
+    "moves": [
+      "Body Slam",
+      "Vicegrip",
+      "Submission",
+      "Focus Energy"
+    ],
+    "stats": {
+      "HP": 285,
+      "Attack": 302,
+      "Defense": 252,
+      "Sp.Atk": 160,
+      "Sp.Def": 190,
+      "Speed": 220
+    }
+  },
+  {
+    "name": "Tauros",
+    "moves": [
+      "Take Down",
+      "Body Slam",
+      "Submission",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 309,
+      "Attack": 256,
+      "Defense": 246,
+      "Sp.Atk": 134,
+      "Sp.Def": 194,
+      "Speed": 274
+    }
+  },
+  {
+    "name": "Magikarp",
+    "moves": [
+      "Tackle",
+      "Splash",
+      "",
+      ""
+    ],
+    "stats": {
+      "HP": 234,
+      "Attack": 109,
+      "Defense": 199,
+      "Sp.Atk": 123,
+      "Sp.Def": 133,
+      "Speed": 251
+    }
+  },
+  {
+    "name": "Gyarados",
+    "moves": [
+      "Waterfall",
+      "Dragon Rage",
+      "Earthquake",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 343,
+      "Attack": 298,
+      "Defense": 206,
+      "Sp.Atk": 168,
+      "Sp.Def": 248,
+      "Speed": 208
+    }
+  },
+  {
+    "name": "Lapras",
+    "moves": [
+      "Surf",
+      "Blizzard",
+      "Sing",
+      "Mist"
+    ],
+    "stats": {
+      "HP": 413,
+      "Attack": 218,
+      "Defense": 208,
+      "Sp.Atk": 218,
+      "Sp.Def": 238,
+      "Speed": 166
+    }
+  },
+  {
+    "name": "Ditto",
+    "moves": [
+      "Transform",
+      "",
+      "",
+      ""
+    ],
+    "stats": {
+      "HP": 277,
+      "Attack": 172,
+      "Defense": 174,
+      "Sp.Atk": 172,
+      "Sp.Def": 172,
+      "Speed": 174
+    }
+  },
+  {
+    "name": "Eevee",
+    "moves": [
+      "Take Down",
+      "Bite",
+      "Lick",
+      "Sand-attack"
+    ],
+    "stats": {
+      "HP": 291,
+      "Attack": 186,
+      "Defense": 178,
+      "Sp.Atk": 166,
+      "Sp.Def": 206,
+      "Speed": 188
+    }
+  },
+  {
+    "name": "Vaporeon",
+    "moves": [
+      "Waterfall",
+      "Quick Attack",
+      "Acid Armor",
+      "Sand-attack"
+    ],
+    "stats": {
+      "HP": 413,
+      "Attack": 178,
+      "Defense": 168,
+      "Sp.Atk": 268,
+      "Sp.Def": 238,
+      "Speed": 176
+    }
+  },
+  {
+    "name": "Jolteon",
+    "moves": [
+      "Thunderbolt",
+      "Pin Missile",
+      "Double Kick",
+      "Sand-attack"
+    ],
+    "stats": {
+      "HP": 283,
+      "Attack": 178,
+      "Defense": 168,
+      "Sp.Atk": 268,
+      "Sp.Def": 238,
+      "Speed": 306
+    }
+  },
+  {
+    "name": "Flareon",
+    "moves": [
+      "Fire Blast",
+      "Smog",
+      "Quick Attack",
+      "Tail Whip"
+    ],
+    "stats": {
+      "HP": 283,
+      "Attack": 308,
+      "Defense": 168,
+      "Sp.Atk": 238,
+      "Sp.Def": 268,
+      "Speed": 176
+    }
+  },
+  {
+    "name": "Porygon",
+    "moves": [
+      "Tri Attack",
+      "Blizzard",
+      "Sharpen",
+      "Conversion"
+    ],
+    "stats": {
+      "HP": 304,
+      "Attack": 191,
+      "Defense": 209,
+      "Sp.Atk": 239,
+      "Sp.Def": 219,
+      "Speed": 149
+    }
+  },
+  {
+    "name": "Omanyte",
+    "moves": [
+      "Surf",
+      "Rock Slide",
+      "Blizzard",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 244,
+      "Attack": 151,
+      "Defense": 269,
+      "Sp.Atk": 249,
+      "Sp.Def": 179,
+      "Speed": 139
+    }
+  },
+  {
+    "name": "Omastar",
+    "moves": [
+      "Water Gun",
+      "Rock Throw",
+      "Spike Cannon",
+      "Bite"
+    ],
+    "stats": {
+      "HP": 299,
+      "Attack": 176,
+      "Defense": 306,
+      "Sp.Atk": 284,
+      "Sp.Def": 194,
+      "Speed": 164
+    }
+  },
+  {
+    "name": "Kabuto",
+    "moves": [
+      "Rock Throw",
+      "Mega Drain",
+      "Blizzard",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 234,
+      "Attack": 231,
+      "Defense": 249,
+      "Sp.Atk": 179,
+      "Sp.Def": 159,
+      "Speed": 179
+    }
+  },
+  {
+    "name": "Kabutops",
+    "moves": [
+      "Rock Slide",
+      "Surf",
+      "Leer",
+      "Rest"
+    ],
+    "stats": {
+      "HP": 279,
+      "Attack": 286,
+      "Defense": 266,
+      "Sp.Atk": 184,
+      "Sp.Def": 194,
+      "Speed": 214
+    }
+  },
+  {
+    "name": "Aerodactyl",
+    "moves": [
+      "Sky Attack",
+      "Bite",
+      "Hyper Beam",
+      "Supersonic"
+    ],
+    "stats": {
+      "HP": 309,
+      "Attack": 254,
+      "Defense": 174,
+      "Sp.Atk": 164,
+      "Sp.Def": 194,
+      "Speed": 302
+    }
+  },
+  {
+    "name": "Snorlax",
+    "moves": [
+      "Body Slam",
+      "Fire Punch",
+      "Defense Curl",
+      "Surf"
+    ],
+    "stats": {
+      "HP": 473,
+      "Attack": 268,
+      "Defense": 178,
+      "Sp.Atk": 178,
+      "Sp.Def": 268,
+      "Speed": 106
+    }
+  },
+  {
+    "name": "Articuno",
+    "moves": [
+      "Blizzard",
+      "Peck",
+      "Agility",
+      "Mist"
+    ],
+    "stats": {
+      "HP": 320,
+      "Attack": 205,
+      "Defense": 235,
+      "Sp.Atk": 225,
+      "Sp.Def": 285,
+      "Speed": 205
+    }
+  },
+  {
+    "name": "Zapdos",
+    "moves": [
+      "Thunder",
+      "Drill Peck",
+      "Flash",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 320,
+      "Attack": 215,
+      "Defense": 205,
+      "Sp.Atk": 285,
+      "Sp.Def": 215,
+      "Speed": 235
+    }
+  },
+  {
+    "name": "Moltres",
+    "moves": [
+      "Fire Blast",
+      "Sky Attack",
+      "Whirlwind",
+      "Rest"
+    ],
+    "stats": {
+      "HP": 320,
+      "Attack": 235,
+      "Defense": 215,
+      "Sp.Atk": 285,
+      "Sp.Def": 205,
+      "Speed": 215
+    }
+  },
+  {
+    "name": "Dratini",
+    "moves": [
+      "Slam",
+      "Headbutt",
+      "Flamethrower",
+      "Thunder Wave"
+    ],
+    "stats": {
+      "HP": 263,
+      "Attack": 204,
+      "Defense": 168,
+      "Sp.Atk": 176,
+      "Sp.Def": 176,
+      "Speed": 178
+    }
+  },
+  {
+    "name": "Dragonair",
+    "moves": [
+      "Dragon Rage",
+      "Headbutt",
+      "Fire Blast",
+      "Thunder Wave"
+    ],
+    "stats": {
+      "HP": 289,
+      "Attack": 232,
+      "Defense": 192,
+      "Sp.Atk": 202,
+      "Sp.Def": 202,
+      "Speed": 204
+    }
+  },
+  {
+    "name": "Dragonite",
+    "moves": [
+      "Body Slam",
+      "Wing Attack",
+      "Dragon Rage",
+      "Leer"
+    ],
+    "stats": {
+      "HP": 325,
+      "Attack": 306,
+      "Defense": 228,
+      "Sp.Atk": 238,
+      "Sp.Def": 238,
+      "Speed": 198
+    }
+  },
+  {
+    "name": "Mewtwo",
+    "moves": [
+      "Psychic",
+      "Recover",
+      "Amnesia",
+      "Blizzard"
+    ],
+    "stats": {
+      "HP": 415,
+      "Attack": 318,
+      "Defense": 278,
+      "Sp.Atk": 406,
+      "Sp.Def": 278,
+      "Speed": 358
+    }
+  },
+  {
+    "name": "Mew",
+    "moves": [
+      "Psychic",
+      "Recover",
+      "Metronome",
+      "Flash"
+    ],
+    "stats": {
+      "HP": 310,
+      "Attack": 205,
+      "Defense": 205,
+      "Sp.Atk": 205,
+      "Sp.Def": 205,
+      "Speed": 205
+    }
+  }
+]
