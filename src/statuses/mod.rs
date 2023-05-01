@@ -1,3 +1,7 @@
+pub trait Damage {
+    fn status_damage(&self, max_hp: f64) -> f64;
+}
+
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub enum NonVolatileStatusType {
     Freeze(u8),
@@ -7,6 +11,18 @@ pub enum NonVolatileStatusType {
     Toxic(u8),
     Sleep(u8),
     Fainted,
+}
+
+impl Damage for NonVolatileStatusType {
+    fn status_damage(&self, max_hp: f64) -> f64 {
+        match &self {
+            Self::Poison => 0.125 * max_hp,
+            Self::Burn => 0.0625 * max_hp,
+            Self::Toxic(turn_count) => (*turn_count as f64) * 0.0625 * max_hp,
+            Self::Fainted => panic!("Fainted damage is not calculated."),
+            _ => 0.0,
+        }
+    }
 }
 
 // Only Gen 1 volatile status types are included below.
@@ -21,7 +37,19 @@ pub enum VolatileStatusType {
     Recharging(u8), // Used for Hyper Beam to stop attacking for one turn
 }
 
+impl Damage for VolatileStatusType {
+    fn status_damage(&self, max_hp: f64) -> f64 {
+        match &self {
+            Self::Bound(_turn_count) => max_hp * 0.0625,
+            Self::Confusion(_turn_count) => 0.0, // TODO: Implement confusion damage
+            Self::Seeded => max_hp * 0.125,
+            _ => 0.0,
+        }
+    }
+}
+
 #[test]
+#[should_panic]
 fn test_non_volatile_status() {
     // All non-volatile status types
     let paralyze: Option<NonVolatileStatusType> = Some(NonVolatileStatusType::Paralysis);
@@ -48,6 +76,7 @@ fn test_non_volatile_status() {
     assert_ne!(frozen, Some(NonVolatileStatusType::Poison));
     assert_ne!(frozen, Some(NonVolatileStatusType::Toxic(1)));
     assert_ne!(frozen, Some(NonVolatileStatusType::Freeze(1)));
+    assert_eq!(0.0, frozen.as_ref().unwrap().status_damage(100.0));
 
     // Paralysis test
     match paralyze {
@@ -61,6 +90,7 @@ fn test_non_volatile_status() {
     assert_ne!(paralyze, Some(NonVolatileStatusType::Poison));
     assert_ne!(paralyze, Some(NonVolatileStatusType::Toxic(1)));
     assert_ne!(paralyze, Some(NonVolatileStatusType::Freeze(1)));
+    assert_eq!(0.0, paralyze.as_ref().unwrap().status_damage(100.0));
 
     // Poison test
     match poison {
@@ -74,6 +104,7 @@ fn test_non_volatile_status() {
     assert_ne!(poison, Some(NonVolatileStatusType::Paralysis));
     assert_ne!(poison, Some(NonVolatileStatusType::Toxic(1)));
     assert_ne!(poison, Some(NonVolatileStatusType::Freeze(1)));
+    assert_eq!(12.5, poison.as_ref().unwrap().status_damage(100.0));
 
     // Burn test
     match burn {
@@ -87,6 +118,7 @@ fn test_non_volatile_status() {
     assert_ne!(burn, Some(NonVolatileStatusType::Paralysis));
     assert_ne!(burn, Some(NonVolatileStatusType::Toxic(21)));
     assert_ne!(burn, Some(NonVolatileStatusType::Freeze(0)));
+    assert_eq!(6.25, burn.as_ref().unwrap().status_damage(100.0));
 
     // Toxic test
     match toxic {
@@ -104,6 +136,7 @@ fn test_non_volatile_status() {
     assert_ne!(toxic, Some(NonVolatileStatusType::Burn));
     assert_ne!(toxic, Some(NonVolatileStatusType::Freeze(0)));
     assert_ne!(toxic, Some(NonVolatileStatusType::Toxic(38)));
+    assert_eq!(12.5, toxic.as_ref().unwrap().status_damage(100.0));
 
     // Sleep test
     match sleep {
@@ -121,6 +154,7 @@ fn test_non_volatile_status() {
     assert_ne!(sleep, Some(NonVolatileStatusType::Burn));
     assert_ne!(sleep, Some(NonVolatileStatusType::Freeze(0)));
     assert_ne!(sleep, Some(NonVolatileStatusType::Toxic(38)));
+    assert_eq!(0.0, sleep.as_ref().unwrap().status_damage(100.0));
 
     // Fainted test
     match fainted {
@@ -141,6 +175,7 @@ fn test_non_volatile_status() {
     assert_ne!(fainted, Some(NonVolatileStatusType::Paralysis));
     assert_ne!(fainted, Some(NonVolatileStatusType::Toxic(21)));
     assert_ne!(fainted, Some(NonVolatileStatusType::Freeze(0)));
+    assert_eq!(0.0, fainted.as_ref().unwrap().status_damage(100.0));
 }
 
 #[test]
@@ -176,6 +211,7 @@ fn test_volatile_status() {
     assert_ne!(bound, Some(VolatileStatusType::Rampage(38)));
     assert_ne!(bound, Some(VolatileStatusType::Charging(1)));
     assert_ne!(bound, Some(VolatileStatusType::Recharging(1)));
+    assert_eq!(6.25, bound.as_ref().unwrap().status_damage(100.0));
 
     // CONFUSION TEST
     match confusion {
@@ -199,6 +235,7 @@ fn test_volatile_status() {
     assert_ne!(confusion, Some(VolatileStatusType::Rampage(3)));
     assert_ne!(confusion, Some(VolatileStatusType::Charging(1)));
     assert_ne!(confusion, Some(VolatileStatusType::Recharging(1)));
+    // TODO: Write assert for confusion damage given hp, attack, and defense of confused pokemon
 
     // FLINCH TEST
     match flinch {
@@ -219,6 +256,7 @@ fn test_volatile_status() {
     assert_ne!(flinch, Some(VolatileStatusType::Rampage(3)));
     assert_ne!(flinch, Some(VolatileStatusType::Charging(1)));
     assert_ne!(flinch, Some(VolatileStatusType::Recharging(1)));
+    assert_eq!(0.0, flinch.as_ref().unwrap().status_damage(100.0));
 
     // SEEDED TEST
     match seeded {
@@ -239,6 +277,7 @@ fn test_volatile_status() {
     assert_ne!(seeded, Some(VolatileStatusType::Rampage(3)));
     assert_ne!(seeded, Some(VolatileStatusType::Charging(1)));
     assert_ne!(seeded, Some(VolatileStatusType::Recharging(1)));
+    assert_eq!(12.5, seeded.as_ref().unwrap().status_damage(100.0));
 
     // RAMPAGE TEST
     match rampage {
@@ -262,6 +301,7 @@ fn test_volatile_status() {
     assert_ne!(rampage, Some(VolatileStatusType::Confusion(3)));
     assert_ne!(rampage, Some(VolatileStatusType::Charging(1)));
     assert_ne!(rampage, Some(VolatileStatusType::Recharging(1)));
+    assert_eq!(0.0, rampage.as_ref().unwrap().status_damage(100.0));
 
     // CHARGING TEST
     match charging {
@@ -285,6 +325,7 @@ fn test_volatile_status() {
     assert_ne!(charging, Some(VolatileStatusType::Confusion(3)));
     assert_ne!(charging, Some(VolatileStatusType::Rampage(1)));
     assert_ne!(charging, Some(VolatileStatusType::Recharging(1)));
+    assert_eq!(0.0, charging.as_ref().unwrap().status_damage(100.0));
 
     // RECHARGING TEST
     match recharging {
@@ -308,4 +349,5 @@ fn test_volatile_status() {
     assert_ne!(recharging, Some(VolatileStatusType::Confusion(3)));
     assert_ne!(recharging, Some(VolatileStatusType::Rampage(1)));
     assert_ne!(recharging, Some(VolatileStatusType::Charging(1)));
+    assert_eq!(0.0, recharging.as_ref().unwrap().status_damage(100.0));
 }

@@ -215,11 +215,11 @@ pub fn construct_type_chart() -> HashMap<Types, HashMap<Types, f64>> {
     type_chart.insert(Types::Fairy, fairy_multipliers);
 
     // Print the type chart
-    for (type1, multipliers) in &type_chart {
-        println!("{:?}:", type1);
-        for (type2, multiplier) in multipliers {
-            println!("  {:?}: {}", type2, multiplier);
-        }
-    }
+    // for (type1, multipliers) in &type_chart {
+    //     println!("{:?}:", type1);
+    //     for (type2, multiplier) in multipliers {
+    //         println!("  {:?}: {}", type2, multiplier);
+    //     }
+    // }
     type_chart
 }
