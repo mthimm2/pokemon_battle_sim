@@ -348,5 +348,10 @@ pub mod pokemon_tests {
             Some(NonVolatileStatusType::Fainted)
         );
         assert_eq!(bulbasaur.hp, 0.0);
+
+        // TODO: Write test for when Toxic hits between 7-16 in intensity.
+        bulbasaur.hp = 100.0;
+        bulbasaur.non_volatile_status_condition = Some(NonVolatileStatusType::Toxic(7));
+        bulbasaur.take_status_damage();
     }
 }
