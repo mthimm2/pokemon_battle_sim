@@ -91,7 +91,7 @@ impl Status {
             None => non_vol_and_vol_damage.0 = 0.0,
         }
 
-        for vol_status in self.vol.iter_mut() {
+        self.vol.iter_mut().for_each(|vol_status| {
             match vol_status {
                 Some(condition) => match condition.0 {
                     VolatileStatusType::Bound => {
@@ -114,7 +114,7 @@ impl Status {
                 },
                 None => non_vol_and_vol_damage.1 = 0.0,
             }
-        }
+        });
         non_vol_and_vol_damage
     }
 }
@@ -136,22 +136,157 @@ mod status_types_tests {
         match status_tester.non_vol {
             Some(NonVolatileStatusType::Freeze) => {
                 assert_eq!(status_tester.turn_count, 1);
-                status_tester.turn_count += 1;
             }
             _ => panic!("Freeze status did not work."),
         }
+        let res: (f64, f64) = status_tester.damage(&100.0);
+        assert_ne!(
+            status_tester.non_vol,
+            Some(NonVolatileStatusType::Paralysis)
+        );
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Sleep));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Toxic));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Fainted));
+        assert_eq!(res.0, 0.0);
+        assert_eq!(res.1, 0.0);
+        assert_eq!(status_tester.turn_count, 2);
 
         // Paralysis test
+        status_tester.non_vol = Some(NonVolatileStatusType::Paralysis);
+        status_tester.turn_count = 1;
+        let res: (f64, f64) = status_tester.damage(&100.0);
+        match status_tester.non_vol {
+            Some(NonVolatileStatusType::Paralysis) => {
+                assert_eq!(status_tester.turn_count, 1);
+            }
+            _ => panic!("Paralysis status did not work."),
+        }
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Sleep));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Toxic));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Fainted));
+        assert_eq!(res.0, 0.0);
+        assert_eq!(res.1, 0.0);
+        assert_eq!(status_tester.turn_count, 1);
 
         // Poison test
+        status_tester.non_vol = Some(NonVolatileStatusType::Poison);
+        status_tester.turn_count = 1;
+        let res: (f64, f64) = status_tester.damage(&100.0);
+        match status_tester.non_vol {
+            Some(NonVolatileStatusType::Poison) => {
+                assert_eq!(status_tester.turn_count, 1);
+            }
+            _ => panic!("Poison status did not work."),
+        }
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
+        assert_ne!(
+            status_tester.non_vol,
+            Some(NonVolatileStatusType::Paralysis)
+        );
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Sleep));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Toxic));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Fainted));
+        assert_eq!(res.0, 12.5);
+        assert_eq!(res.1, 0.0);
+        assert_eq!(status_tester.turn_count, 1);
 
         // Burn test
+        status_tester.non_vol = Some(NonVolatileStatusType::Burn);
+        status_tester.turn_count = 1;
+        let res: (f64, f64) = status_tester.damage(&100.0);
+        match status_tester.non_vol {
+            Some(NonVolatileStatusType::Burn) => {
+                assert_eq!(status_tester.turn_count, 1);
+            }
+            _ => panic!("Burn status did not work."),
+        }
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
+        assert_ne!(
+            status_tester.non_vol,
+            Some(NonVolatileStatusType::Paralysis)
+        );
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Sleep));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Toxic));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Fainted));
+        assert_eq!(res.0, 6.25);
+        assert_eq!(res.1, 0.0);
+        assert_eq!(status_tester.turn_count, 1);
 
         // Toxic test
+        status_tester.non_vol = Some(NonVolatileStatusType::Toxic);
+        status_tester.turn_count = 4;
+        let res: (f64, f64) = status_tester.damage(&100.0);
+        match status_tester.non_vol {
+            Some(NonVolatileStatusType::Toxic) => {
+                assert_eq!(status_tester.turn_count, 5);
+            }
+            _ => panic!("Toxic status did not work."),
+        }
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
+        assert_ne!(
+            status_tester.non_vol,
+            Some(NonVolatileStatusType::Paralysis)
+        );
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Sleep));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Fainted));
+        assert_eq!(res.0, 25.0);
+        assert_eq!(res.1, 0.0);
+        assert_eq!(status_tester.turn_count, 5);
 
         // Sleep test
+        status_tester.non_vol = Some(NonVolatileStatusType::Sleep);
+        status_tester.turn_count = 1;
+        let res: (f64, f64) = status_tester.damage(&100.0);
+        match status_tester.non_vol {
+            Some(NonVolatileStatusType::Sleep) => {
+                assert_eq!(status_tester.turn_count, 2);
+            }
+            _ => panic!("Sleep status did not work."),
+        }
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
+        assert_ne!(
+            status_tester.non_vol,
+            Some(NonVolatileStatusType::Paralysis)
+        );
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Toxic));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Fainted));
+        assert_eq!(res.0, 0.0);
+        assert_eq!(res.1, 0.0);
+        assert_eq!(status_tester.turn_count, 2);
 
         // Fainted test
+        status_tester.non_vol = Some(NonVolatileStatusType::Fainted);
+        status_tester.turn_count = 1;
+        let res: (f64, f64) = status_tester.damage(&100.0);
+        match status_tester.non_vol {
+            Some(NonVolatileStatusType::Fainted) => {
+                assert_eq!(status_tester.turn_count, 1);
+            }
+            _ => panic!("Fainted status did not work."),
+        }
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
+        assert_ne!(
+            status_tester.non_vol,
+            Some(NonVolatileStatusType::Paralysis)
+        );
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Sleep));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Toxic));
+        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
+        assert_eq!(res.0, 0.0);
+        assert_eq!(res.1, 0.0);
+        assert_eq!(status_tester.turn_count, 1);
     }
 
     #[test]

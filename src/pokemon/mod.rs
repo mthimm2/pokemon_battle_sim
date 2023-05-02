@@ -13,8 +13,6 @@ pub struct Pokemon {
     special_attack: u16,
     special_defense: u16,
     speed: u16,
-    // non_volatile_status_condition: Option<NonVolatileStatusType>,
-    // volatile_status_condition: Option<VolatileStatusType>, // TODO: This needs to be a vector, because you could be bound, seeded, and confused simultaneously.
     status_conditions: Status,
     attack_modifier: f64,
     defense_modifier: f64,
@@ -61,8 +59,6 @@ impl Pokemon {
             special_defense,
             speed,
             status_conditions,
-            // non_volatile_status_condition: None,
-            // volatile_status_condition: None,
             attack_modifier: 1.0,
             defense_modifier: 1.0,
             special_attack_modifier: 1.0,
@@ -89,8 +85,10 @@ impl Pokemon {
     // Panics if a fainted Pokemon is still on the field
     fn non_volatile_status_check(&mut self, incoming_status: NonVolatileStatusType) {
         match &self.status_conditions.non_vol {
-            // TODO: Put in handling for burn halving attack and paralysis halving speed.
-            None => self.status_conditions.non_vol = Some(incoming_status),
+            None => {
+                self.status_conditions.non_vol = Some(incoming_status);
+                self.status_conditions.turn_count = 1;
+            }
             // If we're already statused and someone's trying to status us again,
             // we print out that we're already afflicted with status X
             Some(non_volatile_condition) => {
@@ -108,17 +106,14 @@ impl Pokemon {
     }
 
     // Handles assigning a volatile status condition to the Pokemon on the field
-    // TODO: Figure out how to handle a vector of volatile status conditions
     fn volatile_status_check(&mut self, incoming_status: VolatileStatusType) {
-        let mut new_status_flag: bool = false;
-        for vol_status in self.status_conditions.vol.iter() {
-            if incoming_status == vol_status.as_ref().unwrap().0 {
+        let mut new_status_flag: bool = true;
+        self.status_conditions.vol.iter().for_each(|status| {
+            if incoming_status == status.as_ref().unwrap().0 {
                 println!("But it failed!");
-            } else {
-                new_status_flag = true;
-                break;
+                new_status_flag = false;
             }
-        }
+        });
         if new_status_flag == true {
             self.status_conditions.vol.push(Some((incoming_status, 1)));
         }
@@ -134,102 +129,6 @@ impl Pokemon {
         let damages = self.status_conditions.damage(&self.max_hp);
         self.faint_check(damages.0);
         self.faint_check(damages.1);
-        // Damage from non-volatile statuses first
-        // let mut non_volatile_status_damage: f64 = 0.0;
-        // let mut volatile_status_damage: f64 = 0.0;
-
-        // match self.non_volatile_status_condition.take() {
-        //     Some(non_volatile_condition) => {
-        //         match non_volatile_condition {
-        //             NonVolatileStatusType::Poison => {
-        //                 non_volatile_status_damage =
-        //                     non_volatile_condition.status_damage(&self.max_hp);
-        //                 self.non_volatile_status_condition = Some(NonVolatileStatusType::Poison);
-        //             }
-        //             NonVolatileStatusType::Burn => {
-        //                 non_volatile_status_damage =
-        //                     non_volatile_condition.status_damage(&self.max_hp);
-        //                 self.non_volatile_status_condition = Some(NonVolatileStatusType::Burn);
-        //             }
-        //             NonVolatileStatusType::Toxic(toxic_counter) => {
-        //                 // (toxic_counter / 16) % per turn
-        //                 // let toxic_damage: f64 = (*toxic_counter as f64) * 0.0625 * self.max_hp;
-        //                 non_volatile_status_damage =
-        //                     non_volatile_condition.status_damage(&self.max_hp);
-        //                 self.non_volatile_status_condition =
-        //                     Some(NonVolatileStatusType::Toxic(toxic_counter + 1));
-        //             }
-        //             NonVolatileStatusType::Freeze(turn_count) => {
-        //                 non_volatile_status_damage =
-        //                     non_volatile_condition.status_damage(&self.max_hp);
-        //                 self.non_volatile_status_condition =
-        //                     Some(NonVolatileStatusType::Freeze(turn_count + 1));
-        //             }
-        //             NonVolatileStatusType::Paralysis => {
-        //                 non_volatile_status_damage =
-        //                     non_volatile_condition.status_damage(&self.max_hp);
-        //                 self.non_volatile_status_condition = Some(NonVolatileStatusType::Paralysis);
-        //             }
-        //             NonVolatileStatusType::Sleep(turn_count) => {
-        //                 non_volatile_status_damage =
-        //                     non_volatile_condition.status_damage(&self.max_hp);
-        //                 self.non_volatile_status_condition =
-        //                     Some(NonVolatileStatusType::Sleep(turn_count + 1));
-        //             }
-        //             NonVolatileStatusType::Fainted => {
-        //                 panic!("We should not be here! We should have been fainted!");
-        //             }
-        //         }
-        //     }
-        //     None => non_volatile_status_damage = 0.0,
-        // }
-
-        // // Leave it to each type to calculate its damage, then pass that to the faint_check function
-        // self.faint_check(non_volatile_status_damage);
-
-        // // Damage from volatile statuses second
-        // match self.volatile_status_condition.take() {
-        //     Some(volatile_condition) => {
-        //         match volatile_condition {
-        //             VolatileStatusType::Seeded => {
-        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-        //                 self.volatile_status_condition = Some(VolatileStatusType::Seeded);
-        //             }
-        //             VolatileStatusType::Bound(turn_count) => {
-        //                 // This covers bind, wrap, and clamp
-        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-        //                 self.volatile_status_condition =
-        //                     Some(VolatileStatusType::Bound(turn_count + 1));
-        //             }
-        //             VolatileStatusType::Confusion(turn_count) => {
-        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-        //                 self.volatile_status_condition =
-        //                     Some(VolatileStatusType::Confusion(turn_count + 1));
-        //             }
-        //             VolatileStatusType::Flinch => {
-        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-        //                 self.volatile_status_condition = Some(VolatileStatusType::Flinch);
-        //             }
-        //             VolatileStatusType::Rampage(turn_count) => {
-        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-        //                 self.volatile_status_condition =
-        //                     Some(VolatileStatusType::Rampage(turn_count + 1));
-        //             }
-        //             VolatileStatusType::Charging(turn_count) => {
-        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-        //                 self.volatile_status_condition =
-        //                     Some(VolatileStatusType::Charging(turn_count + 1));
-        //             }
-        //             VolatileStatusType::Recharging(turn_count) => {
-        //                 volatile_status_damage = volatile_condition.status_damage(&self.max_hp);
-        //                 self.volatile_status_condition =
-        //                     Some(VolatileStatusType::Recharging(turn_count + 1));
-        //             }
-        //         }
-        //     }
-        //     None => self.faint_check(0.0),
-        // }
-        // self.faint_check(volatile_status_damage);
     }
 
     // Reads the relevant moveset from the file and returns it as a vector of strings
@@ -268,9 +167,16 @@ pub mod pokemon_tests {
         bulbasaur
     }
 
+    fn reset(inst: &mut Pokemon) {
+        inst.hp = 100.0;
+        inst.status_conditions.non_vol = None;
+        inst.status_conditions.turn_count = 0;
+        inst.status_conditions.vol.clear();
+    }
+
     #[test]
     fn test_create_pokemon() {
-        let mut bulbasaur: Pokemon = creator_helper();
+        let bulbasaur: Pokemon = creator_helper();
         assert_eq!(bulbasaur.name, "Bulbasaur");
         assert_eq!(bulbasaur.type_1, Types::Grass);
         assert_eq!(bulbasaur.type_2, None);
@@ -293,33 +199,31 @@ pub mod pokemon_tests {
         assert_eq!(bulbasaur.hp, 0.0);
 
         // Take damage < current health
-        bulbasaur.hp = 100.0;
-        bulbasaur.non_volatile_status_condition = None;
+        reset(&mut bulbasaur);
         bulbasaur.take_attack_damage(84.5);
         assert_eq!(bulbasaur.hp, 15.5);
-        assert_eq!(bulbasaur.non_volatile_status_condition, None);
+        assert_eq!(bulbasaur.status_conditions.non_vol, None);
         assert_ne!(
-            bulbasaur.non_volatile_status_condition,
+            bulbasaur.status_conditions.non_vol,
             Some(NonVolatileStatusType::Fainted)
         );
 
         // Take damage such that health < 1.0
-        bulbasaur.hp = 100.0;
-        bulbasaur.non_volatile_status_condition = None;
+        reset(&mut bulbasaur);
         bulbasaur.take_attack_damage(99.5);
         assert_eq!(bulbasaur.hp, 0.0);
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
+            bulbasaur.status_conditions.non_vol,
             Some(NonVolatileStatusType::Fainted)
         );
 
         // Take damage == current health
         bulbasaur.hp = 100.0;
-        bulbasaur.non_volatile_status_condition = None;
+        bulbasaur.status_conditions.non_vol = None;
         bulbasaur.take_attack_damage(100.0);
         assert_eq!(bulbasaur.hp, 0.0);
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
+            bulbasaur.status_conditions.non_vol,
             Some(NonVolatileStatusType::Fainted)
         );
     }
@@ -329,15 +233,14 @@ pub mod pokemon_tests {
         let mut bulbasaur: Pokemon = creator_helper();
 
         // Single-instance status damage test
-        bulbasaur.hp = 100.0;
-        bulbasaur.non_volatile_status_condition = None;
+        reset(&mut bulbasaur);
         bulbasaur.non_volatile_status_check(NonVolatileStatusType::Poison);
         bulbasaur.take_status_damage();
         assert_eq!(bulbasaur.hp, 87.5);
 
         // Multi-instance poison damage and faint test
         bulbasaur.hp = 100.0;
-        bulbasaur.non_volatile_status_condition = None;
+        bulbasaur.status_conditions.non_vol = None;
         bulbasaur.non_volatile_status_check(NonVolatileStatusType::Poison);
         bulbasaur.take_status_damage();
         assert_eq!(bulbasaur.hp, 87.5);
@@ -352,7 +255,7 @@ pub mod pokemon_tests {
         bulbasaur.take_status_damage();
         assert_eq!(bulbasaur.hp, 25.0);
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
+            bulbasaur.status_conditions.non_vol,
             Some(NonVolatileStatusType::Poison)
         );
         bulbasaur.take_status_damage();
@@ -364,52 +267,146 @@ pub mod pokemon_tests {
     #[test]
     fn test_toxic_damage() {
         let mut bulbasaur: Pokemon = creator_helper();
-        bulbasaur.hp = 100.0;
-        bulbasaur.non_volatile_status_condition = None;
 
-        bulbasaur.non_volatile_status_check(NonVolatileStatusType::Toxic(1));
-        bulbasaur.take_status_damage();
+        bulbasaur.non_volatile_status_check(NonVolatileStatusType::Toxic);
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
-            Some(NonVolatileStatusType::Toxic(2))
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
         );
+        bulbasaur.take_status_damage();
         assert_eq!(bulbasaur.hp, 93.75);
         bulbasaur.take_status_damage();
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
-            Some(NonVolatileStatusType::Toxic(3))
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
         );
         assert_eq!(bulbasaur.hp, 81.25);
         bulbasaur.take_status_damage();
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
-            Some(NonVolatileStatusType::Toxic(4))
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
         );
         assert_eq!(bulbasaur.hp, 62.5);
         bulbasaur.take_status_damage();
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
-            Some(NonVolatileStatusType::Toxic(5))
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
         );
         assert_eq!(bulbasaur.hp, 37.5);
         bulbasaur.take_status_damage();
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
-            Some(NonVolatileStatusType::Toxic(6))
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
         );
         assert_eq!(bulbasaur.hp, 6.25);
 
         // Faint here
         bulbasaur.take_status_damage();
         assert_eq!(
-            bulbasaur.non_volatile_status_condition,
+            bulbasaur.status_conditions.non_vol,
             Some(NonVolatileStatusType::Fainted)
         );
         assert_eq!(bulbasaur.hp, 0.0);
 
-        // TODO: Write test for when Toxic hits between 7-16 in intensity.
+        // 7/16 Toxic hit
         bulbasaur.hp = 100.0;
-        bulbasaur.non_volatile_status_condition = Some(NonVolatileStatusType::Toxic(7));
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.status_conditions.turn_count = 7;
         bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 56.25);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 8/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 50.0);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 9/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 43.75);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 10/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 37.5);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 11/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 31.25);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 12/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 25.0);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 13/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 18.75);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 14/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 12.5);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 15/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 6.25);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Toxic)
+        );
+
+        // 16/16 Toxic hit
+        bulbasaur.hp = 100.0;
+        bulbasaur.status_conditions.non_vol = Some(NonVolatileStatusType::Toxic);
+        bulbasaur.take_status_damage();
+        assert_eq!(bulbasaur.hp, 0.0);
+        assert_eq!(
+            bulbasaur.status_conditions.non_vol,
+            Some(NonVolatileStatusType::Fainted)
+        );
     }
 }
