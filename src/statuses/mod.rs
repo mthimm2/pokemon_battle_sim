@@ -38,7 +38,7 @@ pub enum VolatileStatusType {
 }
 
 impl Damage for VolatileStatusType {
-    fn status_damage(&self, max_hp: &f64, turn_count: &u8) -> f64 {
+    fn status_damage(&self, max_hp: &f64, _turn_count: &u8) -> f64 {
         match &self {
             Self::Bound => max_hp * 0.0625,
             Self::Confusion => 0.0, // TODO: Implement confusion damage
@@ -116,6 +116,50 @@ impl Status {
             }
         });
         non_vol_and_vol_damage
+    }
+
+    // Handles assigning a non-volatile status condition to the Pokemon on the field.
+    // If no status condition, assigns a status condition
+    // If a status condition already exists, prints out the prompts
+    // Panics if a fainted Pokemon is still on the field
+    pub fn non_volatile_status_check(
+        &mut self,
+        incoming_status: NonVolatileStatusType,
+        name: &String,
+    ) {
+        match &self.non_vol {
+            None => {
+                self.non_vol = Some(incoming_status);
+                self.turn_count = 1;
+            }
+            // If we're already statused and someone's trying to status us again,
+            // we print out that we're already afflicted with status X
+            Some(non_volatile_condition) => {
+                print!("{} is already ", name);
+                match non_volatile_condition {
+                    NonVolatileStatusType::Freeze => println!("Frozen!"),
+                    NonVolatileStatusType::Paralysis => println!("Paralyzed!"),
+                    NonVolatileStatusType::Burn => println!("Burned!"),
+                    NonVolatileStatusType::Sleep => println!("Sleeping!"),
+                    NonVolatileStatusType::Fainted => panic!("We should not be here!"),
+                    _ => println!("Poisoned!"), // Toxic and Poison case
+                }
+            }
+        }
+    }
+
+    // Handles assigning a volatile status condition to the Pokemon on the field
+    pub fn volatile_status_check(&mut self, incoming_status: VolatileStatusType) {
+        let mut new_status_flag: bool = true;
+        self.vol.iter().for_each(|status| {
+            if incoming_status == status.as_ref().unwrap().0 {
+                println!("But it failed!");
+                new_status_flag = false;
+            }
+        });
+        if new_status_flag {
+            self.vol.push(Some((incoming_status, 1)));
+        }
     }
 }
 
@@ -292,6 +336,11 @@ mod status_types_tests {
     #[test]
     fn test_volatile_status() {
         // All volatile status types
+        let mut test_status = Status {
+            non_vol: None,
+            vol: Vec::new(),
+            turn_count: 0,
+        };
 
         // BOUND TEST
 

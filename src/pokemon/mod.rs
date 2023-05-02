@@ -29,18 +29,18 @@ impl Pokemon {
         // TODO: Make this function one that takes in a HashMap of all constructed pokemon, that being handled separately
         // By a utility function in an external file.
         // Pass in only a name and this retrieves the Pokemon with all of its preset stats and moves.
-        let mut name: String = String::new();
+        let name: String = String::new();
         // let results = creator_helper();
-        let mut type_1: Types = Types::Normal;
-        let mut type_2: Option<Types> = None;
-        let mut max_hp: f64 = 0.0;
-        let mut hp: f64 = 0.0;
-        let mut attack: u16 = 0;
-        let mut defense: u16 = 0;
-        let mut special_attack: u16 = 0;
-        let mut special_defense: u16 = 0;
-        let mut speed: u16 = 0;
-        let mut status_conditions: Status = Status {
+        let type_1: Types = Types::Normal;
+        let type_2: Option<Types> = None;
+        let max_hp: f64 = 0.0;
+        let hp: f64 = 0.0;
+        let attack: u16 = 0;
+        let defense: u16 = 0;
+        let special_attack: u16 = 0;
+        let special_defense: u16 = 0;
+        let speed: u16 = 0;
+        let status_conditions: Status = Status {
             non_vol: None,
             vol: Vec::new(),
             turn_count: 0,
@@ -79,46 +79,6 @@ impl Pokemon {
         }
     }
 
-    // Handles assigning a non-volatile status condition to the Pokemon on the field.
-    // If no status condition, assigns a status condition
-    // If a status condition already exists, prints out the prompts
-    // Panics if a fainted Pokemon is still on the field
-    fn non_volatile_status_check(&mut self, incoming_status: NonVolatileStatusType) {
-        match &self.status_conditions.non_vol {
-            None => {
-                self.status_conditions.non_vol = Some(incoming_status);
-                self.status_conditions.turn_count = 1;
-            }
-            // If we're already statused and someone's trying to status us again,
-            // we print out that we're already afflicted with status X
-            Some(non_volatile_condition) => {
-                print!("{} is already ", self.name);
-                match non_volatile_condition {
-                    NonVolatileStatusType::Freeze => println!("Frozen!"),
-                    NonVolatileStatusType::Paralysis => println!("Paralyzed!"),
-                    NonVolatileStatusType::Burn => println!("Burned!"),
-                    NonVolatileStatusType::Sleep => println!("Sleeping!"),
-                    NonVolatileStatusType::Fainted => panic!("We should not be here!"),
-                    _ => println!("Poisoned!"), // Toxic and Poison case
-                }
-            }
-        }
-    }
-
-    // Handles assigning a volatile status condition to the Pokemon on the field
-    fn volatile_status_check(&mut self, incoming_status: VolatileStatusType) {
-        let mut new_status_flag: bool = true;
-        self.status_conditions.vol.iter().for_each(|status| {
-            if incoming_status == status.as_ref().unwrap().0 {
-                println!("But it failed!");
-                new_status_flag = false;
-            }
-        });
-        if new_status_flag == true {
-            self.status_conditions.vol.push(Some((incoming_status, 1)));
-        }
-    }
-
     // Wrapper function for the faint check in the context of direct damage
     pub fn take_attack_damage(&mut self, incoming_damage: f64) {
         self.faint_check(incoming_damage);
@@ -132,7 +92,7 @@ impl Pokemon {
     }
 
     // Reads the relevant moveset from the file and returns it as a vector of strings
-    pub fn construct_moveset(&mut self, moves: Vec<String>) {
+    pub fn construct_moveset(&mut self, _moves: Vec<String>) {
         // TODO: Let a vector of strings be used to select moves out of the overall moveset of Gen 1
         // Assign moves in order of their placement in the vector.
         todo!();
@@ -234,14 +194,18 @@ pub mod pokemon_tests {
 
         // Single-instance status damage test
         reset(&mut bulbasaur);
-        bulbasaur.non_volatile_status_check(NonVolatileStatusType::Poison);
+        bulbasaur
+            .status_conditions
+            .non_volatile_status_check(NonVolatileStatusType::Poison, &bulbasaur.name);
         bulbasaur.take_status_damage();
         assert_eq!(bulbasaur.hp, 87.5);
 
         // Multi-instance poison damage and faint test
         bulbasaur.hp = 100.0;
         bulbasaur.status_conditions.non_vol = None;
-        bulbasaur.non_volatile_status_check(NonVolatileStatusType::Poison);
+        bulbasaur
+            .status_conditions
+            .non_volatile_status_check(NonVolatileStatusType::Poison, &bulbasaur.name);
         bulbasaur.take_status_damage();
         assert_eq!(bulbasaur.hp, 87.5);
         bulbasaur.take_status_damage();
@@ -268,7 +232,9 @@ pub mod pokemon_tests {
     fn test_toxic_damage() {
         let mut bulbasaur: Pokemon = creator_helper();
 
-        bulbasaur.non_volatile_status_check(NonVolatileStatusType::Toxic);
+        bulbasaur
+            .status_conditions
+            .non_volatile_status_check(NonVolatileStatusType::Toxic, &bulbasaur.name);
         assert_eq!(
             bulbasaur.status_conditions.non_vol,
             Some(NonVolatileStatusType::Toxic)
