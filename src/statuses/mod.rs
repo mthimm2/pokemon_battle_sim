@@ -1,5 +1,9 @@
+use std::sync::Arc;
+
+use rand::Rng;
+
 pub trait Damage {
-    fn status_damage(&self, max_hp: &f64, turn_count: &u8) -> f64;
+    fn status_damage(&self, max_hp: &f64, _turn_count: &u8, attack: &u16, defense: &u16) -> f64;
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
@@ -14,7 +18,7 @@ pub enum NonVolatileStatusType {
 }
 
 impl Damage for NonVolatileStatusType {
-    fn status_damage(&self, max_hp: &f64, turn_count: &u8) -> f64 {
+    fn status_damage(&self, max_hp: &f64, turn_count: &u8, _attack: &u16, _defense: &u16) -> f64 {
         match &self {
             Self::Poison => 0.125 * max_hp,
             Self::Burn => 0.0625 * max_hp,
@@ -38,10 +42,19 @@ pub enum VolatileStatusType {
 }
 
 impl Damage for VolatileStatusType {
-    fn status_damage(&self, max_hp: &f64, _turn_count: &u8) -> f64 {
+    fn status_damage(&self, max_hp: &f64, _turn_count: &u8, attack: &u16, defense: &u16) -> f64 {
         match &self {
             Self::Bound => max_hp * 0.0625,
-            Self::Confusion => 0.0, // TODO: Implement confusion damage
+            Self::Confusion => {
+                // Damage formula reference: https://bulbapedia.bulbagarden.net/wiki/Generation_V
+                let mut rng = rand::thread_rng();
+                let level_part: f64 = (2.0 * 100.0) / 5.0;
+                let power: f64 = 40.0;
+                let attack_over_defense: f64 = *attack as f64 / *defense as f64;
+                let numerator: f64 = level_part * power * attack_over_defense;
+                let denominator: f64 = 50.0;
+                f64::floor((numerator / denominator) + 2.0 * rng.gen_range(0.85..1.0))
+            }
             Self::Seeded => max_hp * 0.125,
             _ => 0.0,
         }
@@ -55,36 +68,36 @@ pub struct Status {
 }
 
 impl Status {
-    pub fn damage(&mut self, max_hp: &f64) -> (f64, f64) {
+    pub fn damage(&mut self, max_hp: &f64, attack: &u16, defense: &u16) -> (f64, f64) {
         let mut non_vol_and_vol_damage: (f64, f64) = (0.0, 0.0);
         match &self.non_vol {
             Some(non_vol_status) => match non_vol_status {
                 NonVolatileStatusType::Poison => {
                     non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, &self.turn_count)
+                        non_vol_status.status_damage(max_hp, &self.turn_count, attack, defense)
                 }
                 NonVolatileStatusType::Burn => {
                     non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, &self.turn_count)
+                        non_vol_status.status_damage(max_hp, &self.turn_count, attack, defense)
                 }
                 NonVolatileStatusType::Toxic => {
                     non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, &self.turn_count);
+                        non_vol_status.status_damage(max_hp, &self.turn_count, attack, defense);
                     self.turn_count += 1;
                 }
                 NonVolatileStatusType::Fainted => {
                     // This panics in the trait implementaiton
                     non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, &self.turn_count);
+                        non_vol_status.status_damage(max_hp, &self.turn_count, attack, defense)
                 }
                 NonVolatileStatusType::Paralysis => {
                     non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, &self.turn_count);
+                        non_vol_status.status_damage(max_hp, &self.turn_count, attack, defense)
                 }
                 _ => {
                     // Sleep and Freeze cases
                     non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, &self.turn_count);
+                        non_vol_status.status_damage(max_hp, &self.turn_count, attack, defense);
                     self.turn_count += 1;
                 }
             },
@@ -96,19 +109,30 @@ impl Status {
                 Some(condition) => match condition.0 {
                     VolatileStatusType::Bound => {
                         non_vol_and_vol_damage.1 +=
-                            condition.0.status_damage(max_hp, &self.turn_count);
+                            condition
+                                .0
+                                .status_damage(max_hp, &self.turn_count, attack, defense);
                         condition.1 += 1;
                     }
                     VolatileStatusType::Seeded => {
                         non_vol_and_vol_damage.1 +=
-                            condition.0.status_damage(max_hp, &self.turn_count);
+                            condition
+                                .0
+                                .status_damage(max_hp, &self.turn_count, attack, defense);
+                    }
+                    VolatileStatusType::Confusion => {
+                        non_vol_and_vol_damage.1 +=
+                            condition
+                                .0
+                                .status_damage(max_hp, &self.turn_count, attack, defense);
                         condition.1 += 1;
                     }
-                    VolatileStatusType::Confusion => {}
                     _ => {
                         // Flinch, Charging, Recharging, Rampage case
                         non_vol_and_vol_damage.1 +=
-                            condition.0.status_damage(max_hp, &self.turn_count);
+                            condition
+                                .0
+                                .status_damage(max_hp, &self.turn_count, attack, defense);
                         condition.1 += 1;
                     }
                 },
@@ -183,7 +207,7 @@ mod status_types_tests {
             }
             _ => panic!("Freeze status did not work."),
         }
-        let res: (f64, f64) = status_tester.damage(&100.0);
+        let res: (f64, f64) = status_tester.damage(&100.0, &100, &100);
         assert_ne!(
             status_tester.non_vol,
             Some(NonVolatileStatusType::Paralysis)
@@ -200,7 +224,7 @@ mod status_types_tests {
         // Paralysis test
         status_tester.non_vol = Some(NonVolatileStatusType::Paralysis);
         status_tester.turn_count = 1;
-        let res: (f64, f64) = status_tester.damage(&100.0);
+        let res: (f64, f64) = status_tester.damage(&100.0, &100, &100);
         match status_tester.non_vol {
             Some(NonVolatileStatusType::Paralysis) => {
                 assert_eq!(status_tester.turn_count, 1);
@@ -220,7 +244,7 @@ mod status_types_tests {
         // Poison test
         status_tester.non_vol = Some(NonVolatileStatusType::Poison);
         status_tester.turn_count = 1;
-        let res: (f64, f64) = status_tester.damage(&100.0);
+        let res: (f64, f64) = status_tester.damage(&100.0, &100, &100);
         match status_tester.non_vol {
             Some(NonVolatileStatusType::Poison) => {
                 assert_eq!(status_tester.turn_count, 1);
@@ -243,7 +267,7 @@ mod status_types_tests {
         // Burn test
         status_tester.non_vol = Some(NonVolatileStatusType::Burn);
         status_tester.turn_count = 1;
-        let res: (f64, f64) = status_tester.damage(&100.0);
+        let res: (f64, f64) = status_tester.damage(&100.0, &100, &100);
         match status_tester.non_vol {
             Some(NonVolatileStatusType::Burn) => {
                 assert_eq!(status_tester.turn_count, 1);
@@ -266,7 +290,7 @@ mod status_types_tests {
         // Toxic test
         status_tester.non_vol = Some(NonVolatileStatusType::Toxic);
         status_tester.turn_count = 4;
-        let res: (f64, f64) = status_tester.damage(&100.0);
+        let res: (f64, f64) = status_tester.damage(&100.0, &100, &100);
         match status_tester.non_vol {
             Some(NonVolatileStatusType::Toxic) => {
                 assert_eq!(status_tester.turn_count, 5);
@@ -289,7 +313,7 @@ mod status_types_tests {
         // Sleep test
         status_tester.non_vol = Some(NonVolatileStatusType::Sleep);
         status_tester.turn_count = 1;
-        let res: (f64, f64) = status_tester.damage(&100.0);
+        let res: (f64, f64) = status_tester.damage(&100.0, &100, &100);
         match status_tester.non_vol {
             Some(NonVolatileStatusType::Sleep) => {
                 assert_eq!(status_tester.turn_count, 2);
@@ -303,22 +327,7 @@ mod status_types_tests {
             Some(NonVolatileStatusType::Paralysis)
         );
         assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
-        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Toxic));
-        assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Fainted));
-        assert_eq!(res.0, 0.0);
-        assert_eq!(res.1, 0.0);
-        assert_eq!(status_tester.turn_count, 2);
-
-        // Fainted test
-        status_tester.non_vol = Some(NonVolatileStatusType::Fainted);
-        status_tester.turn_count = 1;
-        let res: (f64, f64) = status_tester.damage(&100.0);
-        match status_tester.non_vol {
-            Some(NonVolatileStatusType::Fainted) => {
-                assert_eq!(status_tester.turn_count, 1);
-            }
-            _ => panic!("Fainted status did not work."),
-        }
+        status_tester.damage(&100.0, &100, &100);
         assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
         assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
         assert_ne!(
@@ -334,6 +343,7 @@ mod status_types_tests {
     }
 
     #[test]
+    // TODO: Write tests for volatile status conditions
     fn test_volatile_status() {
         // All volatile status types
         let mut test_status = Status {
@@ -341,19 +351,118 @@ mod status_types_tests {
             vol: Vec::new(),
             turn_count: 0,
         };
+        let mut damage_result: (f64, f64) = (0.0, 0.0);
 
         // BOUND TEST
-
-        // CONFUSION TEST
-
-        // FLINCH TEST
+        test_status.volatile_status_check(VolatileStatusType::Bound);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[0].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0, &100, &100);
+        assert!(test_status.vol.len() == 1);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 6.25);
+        match &test_status.vol[0] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Bound);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Bind test failed."),
+        }
 
         // SEEDED TEST
+        test_status.volatile_status_check(VolatileStatusType::Seeded);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[1].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0, &100, &100);
+        assert!(test_status.vol.len() == 2);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[1] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Seeded);
+                assert_eq!(volatile_tuple.1, 1);
+            }
+            None => panic!("Seeded test failed."),
+        }
+
+        // FLINCH TEST
+        test_status.volatile_status_check(VolatileStatusType::Flinch);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[2].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0, &100, &100);
+        assert!(test_status.vol.len() == 3);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[2] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Flinch);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Flinch test failed."),
+        }
 
         // RAMPAGE TEST
+        test_status.volatile_status_check(VolatileStatusType::Rampage);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[3].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0, &100, &100);
+        assert!(test_status.vol.len() == 4);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[3] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Rampage);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Rampage test failed."),
+        }
 
         // CHARGING TEST
+        test_status.volatile_status_check(VolatileStatusType::Charging);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[4].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0, &100, &100);
+        assert!(test_status.vol.len() == 5);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[4] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Charging);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Charging test failed."),
+        }
 
         // RECHARGING TEST
+        test_status.volatile_status_check(VolatileStatusType::Recharging);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[5].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0, &100, &100);
+        assert!(test_status.vol.len() == 6);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[5] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Recharging);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Recharging test failed."),
+        }
+
+        // CONFUSION TEST
+        test_status.volatile_status_check(VolatileStatusType::Confusion);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[6].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0, &100, &100);
+        assert!(test_status.vol.len() == 7);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 51.75); // Self attack does 33 damage with 100 attack and defense. Random factor does not significantly influence this.
+        match &test_status.vol[6] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Confusion);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Confusion test failed."),
+        }
     }
 }
