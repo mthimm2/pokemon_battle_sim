@@ -102,7 +102,6 @@ impl Status {
                     VolatileStatusType::Seeded => {
                         non_vol_and_vol_damage.1 +=
                             condition.0.status_damage(max_hp, &self.turn_count);
-                        condition.1 += 1;
                     }
                     VolatileStatusType::Confusion => {}
                     _ => {
@@ -334,6 +333,7 @@ mod status_types_tests {
     }
 
     #[test]
+    // TODO: Write tests for volatile status conditions
     fn test_volatile_status() {
         // All volatile status types
         let mut test_status = Status {
@@ -341,19 +341,105 @@ mod status_types_tests {
             vol: Vec::new(),
             turn_count: 0,
         };
+        let mut damage_result: (f64, f64) = (0.0, 0.0);
 
         // BOUND TEST
-
-        // CONFUSION TEST
-
-        // FLINCH TEST
+        test_status.volatile_status_check(VolatileStatusType::Bound);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[0].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0);
+        assert!(test_status.vol.len() == 1);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 6.25);
+        match &test_status.vol[0] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Bound);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Bind test failed."),
+        }
 
         // SEEDED TEST
+        test_status.volatile_status_check(VolatileStatusType::Seeded);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[1].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0);
+        assert!(test_status.vol.len() == 2);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[1] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Seeded);
+                assert_eq!(volatile_tuple.1, 1);
+            }
+            None => panic!("Seeded test failed."),
+        }
+
+        // FLINCH TEST
+        test_status.volatile_status_check(VolatileStatusType::Flinch);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[2].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0);
+        assert!(test_status.vol.len() == 3);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[2] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Flinch);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Flinch test failed."),
+        }
 
         // RAMPAGE TEST
+        test_status.volatile_status_check(VolatileStatusType::Rampage);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[3].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0);
+        assert!(test_status.vol.len() == 4);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[3] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Rampage);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Rampage test failed."),
+        }
 
         // CHARGING TEST
+        test_status.volatile_status_check(VolatileStatusType::Charging);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[4].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0);
+        assert!(test_status.vol.len() == 5);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[4] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Charging);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Charging test failed."),
+        }
 
         // RECHARGING TEST
+        test_status.volatile_status_check(VolatileStatusType::Recharging);
+        assert_eq!(test_status.turn_count, 0);
+        assert_eq!(test_status.vol[5].as_ref().unwrap().1, 1);
+        damage_result = test_status.damage(&100.0);
+        assert!(test_status.vol.len() == 6);
+        assert_eq!(damage_result.0, 0.0);
+        assert_eq!(damage_result.1, 18.75);
+        match &test_status.vol[5] {
+            Some(volatile_tuple) => {
+                assert_eq!(volatile_tuple.0, VolatileStatusType::Recharging);
+                assert_eq!(volatile_tuple.1, 2);
+            }
+            None => panic!("Recharging test failed."),
+        }
+
+        // CONFUSION TEST
+        // todo!();
     }
 }
