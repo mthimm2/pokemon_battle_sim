@@ -1,7 +1,7 @@
 use rand::Rng;
 
 pub trait Damage {
-    fn status_damage(&self, max_hp: f64, _turn_count: u8, attack: u16, defense: u16) -> f64;
+    fn status_damage(&self, max_hp: f64, turn_count: u8, attack: u16, defense: u16) -> f64;
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
@@ -68,73 +68,50 @@ pub struct Status {
 impl Status {
     pub fn damage(&mut self, max_hp: f64, attack: u16, defense: u16) -> (f64, f64) {
         let mut non_vol_and_vol_damage: (f64, f64) = (0.0, 0.0);
+
         match &self.non_vol {
-            Some(non_vol_status) => match non_vol_status {
-                NonVolatileStatusType::Poison => {
-                    non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, self.turn_count, attack, defense)
+            Some(non_vol_status) => {
+                // We always run the damage calc for any non-volatile status condition
+                non_vol_and_vol_damage.0 =
+                    non_vol_status.status_damage(max_hp, self.turn_count, attack, defense);
+                match non_vol_status {
+                    // If we're hit with a non-volatile status, we can perform the damage calc
+                    NonVolatileStatusType::Sleep
+                    | NonVolatileStatusType::Freeze
+                    | NonVolatileStatusType::Toxic => {
+                        // If we're toxiced, slept, or frozen, we increment turn count
+                        self.turn_count += 1;
+                    }
+                    _ => {} // Poison, burn, para, and faint don't increment turn count
                 }
-                NonVolatileStatusType::Burn => {
-                    non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, self.turn_count, attack, defense)
-                }
-                NonVolatileStatusType::Toxic => {
-                    non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, self.turn_count, attack, defense);
-                    self.turn_count += 1;
-                }
-                NonVolatileStatusType::Fainted => {
-                    // This panics in the trait implementaiton
-                    non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, self.turn_count, attack, defense)
-                }
-                NonVolatileStatusType::Paralysis => {
-                    non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, self.turn_count, attack, defense)
-                }
-                _ => {
-                    // Sleep and Freeze cases
-                    non_vol_and_vol_damage.0 =
-                        non_vol_status.status_damage(max_hp, self.turn_count, attack, defense);
-                    self.turn_count += 1;
-                }
-            },
-            None => non_vol_and_vol_damage.0 = 0.0,
+            }
+            None => {} // No action taken if we're not statused
         }
 
         self.vol.iter_mut().for_each(|vol_status| {
             match vol_status {
-                Some(condition) => match condition.0 {
-                    VolatileStatusType::Bound => {
-                        non_vol_and_vol_damage.1 +=
-                            condition
-                                .0
-                                .status_damage(max_hp, self.turn_count, attack, defense);
-                        condition.1 += 1;
+                Some(condition) => {
+                    // Run the damage calc for any valid volatile status condition
+                    non_vol_and_vol_damage.1 +=
+                        condition
+                            .0
+                            .status_damage(max_hp, self.turn_count, attack, defense);
+
+                    // These conditions all have a relevant turn count associated with
+                    // them that we want to increment
+                    match condition.0 {
+                        VolatileStatusType::Bound
+                        | VolatileStatusType::Confusion
+                        | VolatileStatusType::Flinch
+                        | VolatileStatusType::Charging
+                        | VolatileStatusType::Recharging
+                        | VolatileStatusType::Rampage => {
+                            condition.1 += 1;
+                        }
+                        VolatileStatusType::Seeded => {} // No individual turn count increment here
                     }
-                    VolatileStatusType::Seeded => {
-                        non_vol_and_vol_damage.1 +=
-                            condition
-                                .0
-                                .status_damage(max_hp, self.turn_count, attack, defense);
-                    }
-                    VolatileStatusType::Confusion => {
-                        non_vol_and_vol_damage.1 +=
-                            condition
-                                .0
-                                .status_damage(max_hp, self.turn_count, attack, defense);
-                        condition.1 += 1;
-                    }
-                    _ => {
-                        // Flinch, Charging, Recharging, Rampage case
-                        non_vol_and_vol_damage.1 +=
-                            condition
-                                .0
-                                .status_damage(max_hp, self.turn_count, attack, defense);
-                        condition.1 += 1;
-                    }
-                },
-                None => non_vol_and_vol_damage.1 = 0.0,
+                }
+                None => {} // No action taken if we're not statused
             }
         });
         non_vol_and_vol_damage
@@ -147,7 +124,7 @@ impl Status {
     pub fn non_volatile_status_check(
         &mut self,
         incoming_status: NonVolatileStatusType,
-        name: &String,
+        name: &str,
     ) {
         match &self.non_vol {
             None => {
@@ -172,15 +149,14 @@ impl Status {
 
     // Handles assigning a volatile status condition to the Pokemon on the field
     pub fn volatile_status_check(&mut self, incoming_status: VolatileStatusType) {
-        let mut new_status_flag: bool = true;
-        self.vol.iter().for_each(|status| {
-            if incoming_status == status.as_ref().unwrap().0 {
-                println!("But it failed!");
-                new_status_flag = false;
-            }
-        });
-        if new_status_flag {
+        if !self
+            .vol
+            .iter()
+            .any(|status| incoming_status == status.as_ref().unwrap().0)
+        {
             self.vol.push(Some((incoming_status, 1)));
+        } else {
+            println!("But it failed!");
         }
     }
 }
