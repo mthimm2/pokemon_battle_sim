@@ -88,7 +88,7 @@ impl Pokemon {
     pub fn take_status_damage(&mut self) {
         let damages = self
             .status_conditions
-            .damage(&self.max_hp, &self.attack, &self.defense);
+            .damage(self.max_hp, self.attack, self.defense);
         self.faint_check(damages.0);
         self.faint_check(damages.1);
     }
