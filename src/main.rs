@@ -1,8 +1,15 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
 
+#[cfg(test)]
+mod tests {
+    mod pokemon_tests;
+    mod status_tests;
+}
+
 mod pokemon;
 mod statuses;
 mod typing;
+
 use pokemon::Pokemon;
 use statuses::{NonVolatileStatusType, VolatileStatusType};
 use std::collections::HashMap;
