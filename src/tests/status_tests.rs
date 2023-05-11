@@ -17,7 +17,7 @@ fn test_non_volatile_status() {
         }
         _ => panic!("Freeze status did not work."),
     }
-    let res: (f64, f64) = status_tester.damage(100.0, 100, 100);
+    let res: (f64, f64) = status_tester.damage(100.0, 100.0, 100.0);
     assert_ne!(
         status_tester.non_vol,
         Some(NonVolatileStatusType::Paralysis)
@@ -34,7 +34,7 @@ fn test_non_volatile_status() {
     // Paralysis test
     status_tester.non_vol = Some(NonVolatileStatusType::Paralysis);
     status_tester.turn_count = 1;
-    let res: (f64, f64) = status_tester.damage(100.0, 100, 100);
+    let res: (f64, f64) = status_tester.damage(100.0, 100.0, 100.0);
     match status_tester.non_vol {
         Some(NonVolatileStatusType::Paralysis) => {
             assert_eq!(status_tester.turn_count, 1);
@@ -54,7 +54,7 @@ fn test_non_volatile_status() {
     // Poison test
     status_tester.non_vol = Some(NonVolatileStatusType::Poison);
     status_tester.turn_count = 1;
-    let res: (f64, f64) = status_tester.damage(100.0, 100, 100);
+    let res: (f64, f64) = status_tester.damage(100.0, 100.0, 100.0);
     match status_tester.non_vol {
         Some(NonVolatileStatusType::Poison) => {
             assert_eq!(status_tester.turn_count, 1);
@@ -77,7 +77,7 @@ fn test_non_volatile_status() {
     // Burn test
     status_tester.non_vol = Some(NonVolatileStatusType::Burn);
     status_tester.turn_count = 1;
-    let res: (f64, f64) = status_tester.damage(100.0, 100, 100);
+    let res: (f64, f64) = status_tester.damage(100.0, 100.0, 100.0);
     match status_tester.non_vol {
         Some(NonVolatileStatusType::Burn) => {
             assert_eq!(status_tester.turn_count, 1);
@@ -100,7 +100,7 @@ fn test_non_volatile_status() {
     // Toxic test
     status_tester.non_vol = Some(NonVolatileStatusType::Toxic);
     status_tester.turn_count = 4;
-    let res: (f64, f64) = status_tester.damage(100.0, 100, 100);
+    let res: (f64, f64) = status_tester.damage(100.0, 100.0, 100.0);
     match status_tester.non_vol {
         Some(NonVolatileStatusType::Toxic) => {
             assert_eq!(status_tester.turn_count, 5);
@@ -123,7 +123,7 @@ fn test_non_volatile_status() {
     // Sleep test
     status_tester.non_vol = Some(NonVolatileStatusType::Sleep);
     status_tester.turn_count = 1;
-    let res: (f64, f64) = status_tester.damage(100.0, 100, 100);
+    let res: (f64, f64) = status_tester.damage(100.0, 100.0, 100.0);
     match status_tester.non_vol {
         Some(NonVolatileStatusType::Sleep) => {
             assert_eq!(status_tester.turn_count, 2);
@@ -137,7 +137,7 @@ fn test_non_volatile_status() {
         Some(NonVolatileStatusType::Paralysis)
     );
     assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Poison));
-    status_tester.damage(100.0, 100, 100);
+    status_tester.damage(100.0, 100.0, 100.0);
     assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Freeze));
     assert_ne!(status_tester.non_vol, Some(NonVolatileStatusType::Burn));
     assert_ne!(
@@ -167,7 +167,7 @@ fn test_volatile_status() {
     test_status.volatile_status_check(VolatileStatusType::Bound);
     assert_eq!(test_status.turn_count, 0);
     assert_eq!(test_status.vol[0].as_ref().unwrap().1, 1);
-    damage_result = test_status.damage(100.0, 100, 100);
+    damage_result = test_status.damage(100.0, 100.0, 100.0);
     assert!(test_status.vol.len() == 1);
     assert_eq!(damage_result.0, 0.0);
     assert_eq!(damage_result.1, 6.25);
@@ -183,7 +183,7 @@ fn test_volatile_status() {
     test_status.volatile_status_check(VolatileStatusType::Seeded);
     assert_eq!(test_status.turn_count, 0);
     assert_eq!(test_status.vol[1].as_ref().unwrap().1, 1);
-    damage_result = test_status.damage(100.0, 100, 100);
+    damage_result = test_status.damage(100.0, 100.0, 100.0);
     assert!(test_status.vol.len() == 2);
     assert_eq!(damage_result.0, 0.0);
     assert_eq!(damage_result.1, 18.75);
@@ -199,7 +199,7 @@ fn test_volatile_status() {
     test_status.volatile_status_check(VolatileStatusType::Flinch);
     assert_eq!(test_status.turn_count, 0);
     assert_eq!(test_status.vol[2].as_ref().unwrap().1, 1);
-    damage_result = test_status.damage(100.0, 100, 100);
+    damage_result = test_status.damage(100.0, 100.0, 100.0);
     assert!(test_status.vol.len() == 3);
     assert_eq!(damage_result.0, 0.0);
     assert_eq!(damage_result.1, 18.75);
@@ -215,7 +215,7 @@ fn test_volatile_status() {
     test_status.volatile_status_check(VolatileStatusType::Rampage);
     assert_eq!(test_status.turn_count, 0);
     assert_eq!(test_status.vol[3].as_ref().unwrap().1, 1);
-    damage_result = test_status.damage(100.0, 100, 100);
+    damage_result = test_status.damage(100.0, 100.0, 100.0);
     assert!(test_status.vol.len() == 4);
     assert_eq!(damage_result.0, 0.0);
     assert_eq!(damage_result.1, 18.75);
@@ -231,7 +231,7 @@ fn test_volatile_status() {
     test_status.volatile_status_check(VolatileStatusType::Charging);
     assert_eq!(test_status.turn_count, 0);
     assert_eq!(test_status.vol[4].as_ref().unwrap().1, 1);
-    damage_result = test_status.damage(100.0, 100, 100);
+    damage_result = test_status.damage(100.0, 100.0, 100.0);
     assert!(test_status.vol.len() == 5);
     assert_eq!(damage_result.0, 0.0);
     assert_eq!(damage_result.1, 18.75);
@@ -247,7 +247,7 @@ fn test_volatile_status() {
     test_status.volatile_status_check(VolatileStatusType::Recharging);
     assert_eq!(test_status.turn_count, 0);
     assert_eq!(test_status.vol[5].as_ref().unwrap().1, 1);
-    damage_result = test_status.damage(100.0, 100, 100);
+    damage_result = test_status.damage(100.0, 100.0, 100.0);
     assert!(test_status.vol.len() == 6);
     assert_eq!(damage_result.0, 0.0);
     assert_eq!(damage_result.1, 18.75);
@@ -263,7 +263,7 @@ fn test_volatile_status() {
     test_status.volatile_status_check(VolatileStatusType::Confusion);
     assert_eq!(test_status.turn_count, 0);
     assert_eq!(test_status.vol[6].as_ref().unwrap().1, 1);
-    damage_result = test_status.damage(100.0, 100, 100);
+    damage_result = test_status.damage(100.0, 100.0, 100.0);
     assert!(test_status.vol.len() == 7);
     assert_eq!(damage_result.0, 0.0);
     assert_eq!(damage_result.1, 51.75); // Self attack does 33 damage with 100 attack and defense. Random factor does not significantly influence this.
