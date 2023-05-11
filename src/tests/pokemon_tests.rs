@@ -10,11 +10,11 @@ fn creator_helper() -> Pokemon {
     bulbasaur.type_2 = None;
     bulbasaur.max_hp = 100.0;
     bulbasaur.hp = bulbasaur.max_hp.clone();
-    bulbasaur.attack = 100;
-    bulbasaur.defense = 100;
-    bulbasaur.special_attack = 100;
-    bulbasaur.special_defense = 100;
-    bulbasaur.speed = 100;
+    bulbasaur.attack = 100.0;
+    bulbasaur.defense = 100.0;
+    bulbasaur.special_attack = 100.0;
+    bulbasaur.special_defense = 100.0;
+    bulbasaur.speed = 100.0;
     bulbasaur
 }
 
@@ -33,11 +33,11 @@ fn test_create_pokemon() {
     assert_eq!(bulbasaur.type_2, None);
     assert_eq!(bulbasaur.max_hp, 100.0);
     assert_eq!(bulbasaur.hp, 100.0);
-    assert_eq!(bulbasaur.attack, 100);
-    assert_eq!(bulbasaur.defense, 100);
-    assert_eq!(bulbasaur.special_attack, 100);
-    assert_eq!(bulbasaur.special_defense, 100);
-    assert_eq!(bulbasaur.speed, 100);
+    assert_eq!(bulbasaur.attack, 100.0);
+    assert_eq!(bulbasaur.defense, 100.0);
+    assert_eq!(bulbasaur.special_attack, 100.0);
+    assert_eq!(bulbasaur.special_defense, 100.0);
+    assert_eq!(bulbasaur.speed, 100.0);
 }
 
 #[test]
