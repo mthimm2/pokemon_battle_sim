@@ -1,7 +1,7 @@
 use rand::Rng;
 
 pub trait Damage {
-    fn status_damage(&self, max_hp: f64, turn_count: u8, attack: u16, defense: u16) -> f64;
+    fn status_damage(&self, max_hp: f64, turn_count: u8, attack: f64, defense: f64) -> f64;
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
@@ -16,7 +16,7 @@ pub enum NonVolatileStatusType {
 }
 
 impl Damage for NonVolatileStatusType {
-    fn status_damage(&self, max_hp: f64, turn_count: u8, _attack: u16, _defense: u16) -> f64 {
+    fn status_damage(&self, max_hp: f64, turn_count: u8, _attack: f64, _defense: f64) -> f64 {
         match &self {
             Self::Poison => 0.125 * max_hp,
             Self::Burn => 0.0625 * max_hp,
@@ -40,7 +40,7 @@ pub enum VolatileStatusType {
 }
 
 impl Damage for VolatileStatusType {
-    fn status_damage(&self, max_hp: f64, _turn_count: u8, attack: u16, defense: u16) -> f64 {
+    fn status_damage(&self, max_hp: f64, _turn_count: u8, attack: f64, defense: f64) -> f64 {
         match &self {
             Self::Bound => max_hp * 0.0625,
             Self::Confusion => {
@@ -48,7 +48,7 @@ impl Damage for VolatileStatusType {
                 let mut rng = rand::thread_rng();
                 let level_part: f64 = (2.0 * 100.0) / 5.0;
                 let power: f64 = 40.0;
-                let attack_over_defense: f64 = attack as f64 / defense as f64;
+                let attack_over_defense: f64 = attack / defense;
                 let numerator: f64 = level_part * power * attack_over_defense;
                 let denominator: f64 = 50.0;
                 f64::floor((numerator / denominator) + 2.0 * rng.gen_range(0.85..1.0))
@@ -66,7 +66,7 @@ pub struct Status {
 }
 
 impl Status {
-    pub fn damage(&mut self, max_hp: f64, attack: u16, defense: u16) -> (f64, f64) {
+    pub fn damage(&mut self, max_hp: f64, attack: f64, defense: f64) -> (f64, f64) {
         let mut non_vol_and_vol_damage: (f64, f64) = (0.0, 0.0);
 
         match &self.non_vol {
