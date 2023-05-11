@@ -8,11 +8,11 @@ pub struct Pokemon {
     pub type_2: Option<Types>,
     pub max_hp: f64,
     pub hp: f64,
-    pub attack: u16,
-    pub defense: u16,
-    pub special_attack: u16,
-    pub special_defense: u16,
-    pub speed: u16,
+    pub attack: f64,
+    pub defense: f64,
+    pub special_attack: f64,
+    pub special_defense: f64,
+    pub speed: f64,
     pub status_conditions: Status,
     pub attack_modifier: f64,
     pub defense_modifier: f64,
@@ -29,36 +29,22 @@ impl Pokemon {
         // TODO: Make this function one that takes in a HashMap of all constructed pokemon, that being handled separately
         // By a utility function in an external file.
         // Pass in only a name and this retrieves the Pokemon with all of its preset stats and moves.
-        let name: String = String::new();
-        // let results = creator_helper();
-        let type_1: Types = Types::Normal;
-        let type_2: Option<Types> = None;
-        let max_hp: f64 = 0.0;
-        let hp: f64 = 0.0;
-        let attack: u16 = 0;
-        let defense: u16 = 0;
-        let special_attack: u16 = 0;
-        let special_defense: u16 = 0;
-        let speed: u16 = 0;
-        let status_conditions: Status = Status {
-            non_vol: None,
-            vol: Vec::new(),
-            turn_count: 0,
-        };
-        //let mut moves: Vec<Move> = Vec::new();
-
         Pokemon {
-            name,
-            type_1,
-            type_2,
-            max_hp,
-            hp,
-            attack,
-            defense,
-            special_attack,
-            special_defense,
-            speed,
-            status_conditions,
+            name: String::from("New"),
+            type_1: Types::Normal,
+            type_2: None,
+            max_hp: 0.0,
+            hp: 0.0,
+            attack: 0.0,
+            defense: 0.0,
+            special_attack: 0.0,
+            special_defense: 0.0,
+            speed: 0.0,
+            status_conditions: Status {
+                non_vol: None,
+                vol: Vec::new(),
+                turn_count: 0,
+            },
             attack_modifier: 1.0,
             defense_modifier: 1.0,
             special_attack_modifier: 1.0,
@@ -71,11 +57,10 @@ impl Pokemon {
     // Performs the job of checking the incoming move's damage against current hp
     // Subtracts off health and faints the Pokemon as needed
     fn faint_check(&mut self, damage: f64) {
-        if self.hp - damage < 1.0 {
+        self.hp = (self.hp - damage).max(0.0);
+        if self.hp < 1.0 {
             self.hp = 0.0;
             self.status_conditions.non_vol = Some(NonVolatileStatusType::Fainted);
-        } else {
-            self.hp -= damage;
         }
     }
 
@@ -89,8 +74,7 @@ impl Pokemon {
         let damages = self
             .status_conditions
             .damage(self.max_hp, self.attack, self.defense);
-        self.faint_check(damages.0);
-        self.faint_check(damages.1);
+        self.faint_check(damages.0 + damages.1);
     }
 
     // Reads the relevant moveset from the file and returns it as a vector of strings
@@ -100,11 +84,6 @@ impl Pokemon {
         todo!();
     }
 
-    // TODO: Implement functions surrounding moves
-    // PP check and select move for use during the turn
-    // pub fn move_pp_check(&mut self, move: Move) -> Move {}
-    pub fn move_pp_check(&mut self) {
-        // Refer to comment line above for final function header
-        todo!();
-    }
+    // Function that will allow the user to select a move from the pokemon's moveset
+    // pub fn select_move(&self, choice: u8) -> Move {}
 }
